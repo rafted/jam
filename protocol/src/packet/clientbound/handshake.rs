@@ -2,7 +2,7 @@ use protocol_macro::PacketDef;
 
 use crate::varint::VarInt;
 
-// #[derive(PacketDef)]
+#[derive(PacketDef)]
 pub struct HandshakePacket {
     pub protocol_version: VarInt,
     pub server_address: String,

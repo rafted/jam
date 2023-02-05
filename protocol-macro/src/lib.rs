@@ -55,7 +55,7 @@ pub fn define_packet(input: TokenStream) -> TokenStream {
                 });
             }
             encode_expand.extend(quote! {
-                <#field_type as crate::encoding::Encodable>::encode(self.#field_name, writer)?;
+                <#field_type as crate::encoding::Encodable>::encode(&self.#field_name, writer)?;
             });
         }
     }
