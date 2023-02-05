@@ -1,7 +1,9 @@
+use protocol::state::State;
 use tokio::net::TcpStream;
 
 pub struct Connection {
-    pub stream: TcpStream
+    pub stream: TcpStream,
+    pub state: State
 }
 
 impl Connection {
