@@ -1,8 +1,5 @@
 use byteorder::{BigEndian, ReadBytesExt};
-use std::{
-    fs::read,
-    io::{Read, Write},
-};
+use std::io::{Read, Write};
 
 use crate::varint::VarInt;
 
@@ -68,11 +65,8 @@ impl Encodable for String {
     fn encode<T: Write>(&self, writer: &mut T) -> anyhow::Result<()> {
         let string_len = self.len();
 
-        VarInt::encode(&VarInt(string_len as i32), writer)
-            .expect("couldn't write string length");
-
-        writer.write(String::as_bytes(self))
-            .expect("couldn't write string");
+        VarInt::encode(&VarInt(string_len as i32), writer)?;
+        writer.write(String::as_bytes(self))?;
 
         Ok(())
     }
