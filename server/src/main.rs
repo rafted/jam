@@ -5,7 +5,7 @@ pub mod connection;
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
-    let listener = TcpListener::bind("127.0.0.1:6142").await?;
+    let listener = TcpListener::bind("0.0.0.0:25565").await?;
 
     loop {
         let (mut stream, _) = listener.accept().await?;
