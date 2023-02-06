@@ -76,3 +76,11 @@ pub struct HeldItemChangePacket {
 
 #[derive(PacketDef)]
 pub struct AnimationPacket;
+
+#[derive(PacketDef)]
+pub struct EntityActionPacket {
+    pub entity_id: VarInt,
+    pub action_id: VarInt,
+    pub action_parameter: VarInt
+}
+
