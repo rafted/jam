@@ -158,3 +158,8 @@ pub struct ClientSettingsPacket {
     pub chat_colors: bool,
     pub display_skin_parts: u8,
 }
+
+#[derive(PacketDef)]
+pub struct ClientStatusPacket {
+    pub action_id: VarInt,
+}
