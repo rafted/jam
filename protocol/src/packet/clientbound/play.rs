@@ -402,3 +402,11 @@ pub struct WindowItemsPacket {
     pub count: i16,
     // pub data: Vec<Slot>
 }
+
+#[derive(PacketDef)]
+pub struct WindowPropertyPacket {
+    pub id: u8,
+    pub property: i16,
+    pub value: i16,
+}
+
