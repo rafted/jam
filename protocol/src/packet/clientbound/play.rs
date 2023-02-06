@@ -326,3 +326,11 @@ pub struct ExplosionPacket {
     pub player_motion_y: i16,
     pub player_motion_z: i16,
 }
+
+#[derive(PacketDef)]
+pub struct EffectPacket {
+    pub effect_id: i32,
+    pub location: Position,
+    pub data: i32,
+    pub disable_relative_volume: bool,
+}
