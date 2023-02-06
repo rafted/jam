@@ -533,3 +533,12 @@ pub struct DisconnectPacket {
 pub struct ServerDifficultyPacket {
     pub difficulty: u8,
 }
+
+#[derive(PacketDef)]
+pub struct CombatEventPacket {
+    pub event: VarInt,
+    pub duration: Optional<VarInt>,
+    pub player_id: Optional<VarInt>,
+    pub entity_id: Optional<i32>,
+    pub message: String,
+}
