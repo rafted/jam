@@ -227,3 +227,9 @@ pub struct AttachEntityPacket {
     pub vehicle_id: i32,
     pub leash: bool,
 }
+
+#[derive(PacketDef)]
+pub struct EntityMetadataPacket {
+    pub entity_id: VarInt,
+    // pub metadata: Metadata
+}
