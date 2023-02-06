@@ -298,7 +298,7 @@ pub struct BlockActionPacket {
 }
 
 #[derive(PacketDef)]
-pub struct BlockBreakAnimation {
+pub struct BlockBreakAnimationPacket {
     pub entity_id: VarInt,
     // pub location: Position,
     pub destroy_stage: i8
