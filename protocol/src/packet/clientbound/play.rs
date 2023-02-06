@@ -554,3 +554,8 @@ pub struct WorldBorderPacket {
 
     // TODO: ??
 }
+
+#[derive(PacketDef)]
+pub struct SetCompressionPacket {
+    pub threshold: VarInt,
+}
