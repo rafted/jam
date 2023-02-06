@@ -365,3 +365,12 @@ pub struct ChangeGameStatePacket {
     pub reason: u8,
     pub value: i16,
 }
+
+#[derive(PacketDef)]
+pub struct SpawnGlobalEntityPacket {
+    pub entity_id: VarInt,
+    pub type_: i8,
+    pub x: i32,
+    pub y: i32,
+    pub z: i32,
+}
