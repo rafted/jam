@@ -475,3 +475,9 @@ pub struct PlayerAbilitiesPacket {
     pub flying_speed: f32,
     pub fov_modifier: f32,
 }
+
+#[derive(PacketDef)]
+pub struct TabCompletePacket {
+    pub flags: VarInt,
+    pub matches: Vec<String>,
+}
