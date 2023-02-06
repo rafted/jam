@@ -135,3 +135,10 @@ pub struct UpdateSignPacket {
     pub line_3: String,
     pub line_4: String,
 }
+
+#[derive(PacketDef)]
+pub struct PlayerAbilitiesPacket {
+    pub flags: i8,
+    pub flying_speed: f32,
+    pub walking_speed: f32,
+}
