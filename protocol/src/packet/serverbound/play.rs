@@ -51,3 +51,10 @@ pub struct PlayerPositionAndLookPacket {
     pub pitch: f32,
     pub on_ground: bool,
 }
+
+#[derive(PacketDef)]
+pub struct PlayerDiggingPacket {
+    pub status: i8,
+    // pub location: Position,
+    face: i8
+}
