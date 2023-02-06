@@ -571,3 +571,9 @@ pub struct ResourcePackSendPacket {
     pub url: String,
     pub hash: String,
 }
+
+#[derive(PacketDef)]
+pub struct UpdateEntityNBTPacket {
+    pub id: VarInt,
+    pub tag: NBTTag,
+}
