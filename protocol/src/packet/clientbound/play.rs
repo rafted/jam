@@ -208,3 +208,9 @@ pub struct EntityTeleportPacket {
     // pub pitch: Angle,
     pub on_ground: bool,
 }
+
+#[derive(PacketDef)]
+pub struct EntityHeadLookPacket {
+    pub entity_id: VarInt,
+    pub yaw: Angle,
+}
