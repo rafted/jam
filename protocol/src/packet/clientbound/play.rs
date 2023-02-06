@@ -150,3 +150,11 @@ pub struct SpawnExperienceOrbPacket {
     pub z: i32,
     pub count: i16
 }
+
+#[derive(PacketDef)]
+pub struct EntityVelocityPacket {
+    pub entity_id: VarInt,
+    pub velocity_x: i16,
+    pub velocity_y: i16,
+    pub velocity_z: i16,
+}
