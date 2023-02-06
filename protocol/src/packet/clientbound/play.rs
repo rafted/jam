@@ -263,6 +263,7 @@ pub struct EntityPropertiesPacket {
 
     // TODO: ??
 }
+
 #[derive(PacketDef)]
 pub struct ChunkDataPacket {
     pub chunk_x: i32,
@@ -271,4 +272,13 @@ pub struct ChunkDataPacket {
     pub primary_bit_mask: u16,
     pub size: VarInt,
     // pub data: Chunk
+}
+
+#[derive(PacketDef)]
+pub struct MultiBlockChangePacket {
+    pub chunk_x: i32,
+    pub chunk_z: i32,
+    pub record_count: VarInt,
+
+    // TODO: ??
 }
