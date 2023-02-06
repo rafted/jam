@@ -78,3 +78,8 @@ pub struct UseBedPacket {
     pub location: Position
 }
 
+#[derive(PacketDef)]
+pub struct AnimationPacket {
+    pub entity_id: VarInt,
+    pub animation: u8
+}
