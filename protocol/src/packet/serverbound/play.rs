@@ -163,3 +163,9 @@ pub struct ClientSettingsPacket {
 pub struct ClientStatusPacket {
     pub action_id: VarInt,
 }
+
+#[derive(PacketDef)]
+pub struct PluginMessagePacket {
+    pub channel: String,
+    pub data: Vec<i8>,
+}
