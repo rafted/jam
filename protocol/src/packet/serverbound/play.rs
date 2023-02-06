@@ -7,3 +7,8 @@ pub struct KeepAlivePacket {
     pub id: VarInt,
 }
 
+#[derive(PacketDef)]
+pub struct ChatMessagePacket {
+    pub message: String,
+}
+
