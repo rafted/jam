@@ -174,3 +174,9 @@ pub struct PluginMessagePacket {
 pub struct SpectatePacket {
     // pub target: UUID,
 }
+
+#[derive(PacketDef)]
+pub struct ResourcePackStatusPacket {
+    pub hash: String,
+    pub result: VarInt,
+}
