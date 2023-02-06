@@ -453,3 +453,10 @@ pub struct UpdateBlockEntityPacket {
 pub struct OpenSignEditorPacket {
     pub location: Position,
 }
+
+#[derive(PacketDef)]
+pub struct StatisticsPacket {
+    pub count: VarInt,
+
+    // TODO: ??
+}
