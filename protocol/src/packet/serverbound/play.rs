@@ -169,3 +169,8 @@ pub struct PluginMessagePacket {
     pub channel: String,
     pub data: Vec<i8>,
 }
+
+#[derive(PacketDef)]
+pub struct SpectatePacket {
+    // pub target: UUID,
+}
