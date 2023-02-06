@@ -90,6 +90,30 @@ macro_rules! encde_num {
     };
 }
 
+impl Encodable for i8 {
+    fn decode<T: Read>(reader: &mut T) -> anyhow::Result<Self> {
+        let val = reader.read_i8()?;
+        Ok(val)
+    }
+
+    fn encode<T: Write>(&self, writer: &mut T) -> anyhow::Result<()> {
+        writer.write_all(&self.to_be_bytes())?;
+        Ok(())
+    }
+}
+
+impl Encodable for u8 {
+    fn decode<T: Read>(reader: &mut T) -> anyhow::Result<Self> {
+        let val = reader.read_u8()?;
+        Ok(val)
+    }
+
+    fn encode<T: Write>(&self, writer: &mut T) -> anyhow::Result<()> {
+        writer.write_all(&self.to_be_bytes())?;
+        Ok(())
+    }
+}
+
 encde_num!(i16);
 encde_num!(i32);
 encde_num!(i64);
