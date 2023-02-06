@@ -288,3 +288,11 @@ pub struct BlockChangePacket {
     // pub location: Position,
     pub block_id: VarInt
 }
+
+#[derive(PacketDef)]
+pub struct BlockActionPacket {
+    // pub location: Position,
+    pub byte_1: u8,
+    pub byte_2: u8,
+    pub block_type: VarInt
+}
