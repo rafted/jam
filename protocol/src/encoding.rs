@@ -1,5 +1,6 @@
 use byteorder::{BigEndian, ReadBytesExt};
 use std::io::{Read, Write};
+use crate::chat::ChatComponent;
 
 use crate::varint::VarInt;
 
@@ -69,6 +70,20 @@ impl Encodable for String {
         writer.write(String::as_bytes(self))?;
 
         Ok(())
+    }
+}
+
+impl Encodable for ChatComponent {
+    fn decode<T: Read>(reader: &mut T) -> anyhow::Result<Self> {
+        let encoded = String::decode(reader)?;
+
+        return serde_json::from_str(&encoded)?
+    }
+
+    fn encode<T: Write>(&self, writer: &mut T) -> anyhow::Result<()> {
+        let encoded = serde_json::to_string(self)?;
+
+        String::encode(&encoded, writer)
     }
 }
 
