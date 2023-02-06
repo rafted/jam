@@ -481,3 +481,11 @@ pub struct TabCompletePacket {
     pub flags: VarInt,
     pub matches: Vec<String>,
 }
+
+#[derive(PacketDef)]
+pub struct ScoreboardObjectivePacket {
+    pub name: String,
+    pub mode: i8,
+    pub value: Option<String>,
+    pub type_: Option<String>,
+}
