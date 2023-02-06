@@ -141,3 +141,12 @@ pub struct SpawnPaintingPacket {
     // pub location: Position,
     pub direction: u8,
 }
+
+#[derive(PacketDef)]
+pub struct SpawnExperienceOrbPacket {
+    pub entity_id: VarInt,
+    pub x: i32,
+    pub y: i32,
+    pub z: i32,
+    pub count: i16
+}
