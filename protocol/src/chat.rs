@@ -30,7 +30,7 @@ pub struct ClickEvent {
 
 #[derive(Serialize, Deserialize)]
 pub struct HoverEvent<'a> {
-    pub show_text: Option<&'a ChatComponent>,
+    pub show_text: Option<&'a ChatComponent<'a>>,
     // pub show_item: Option<NBTItem>,
     // pub show_entity: Option<NBTEntity>,
     // pub show_achievement: Option<NBTAchievement>
