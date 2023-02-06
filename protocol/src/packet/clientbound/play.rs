@@ -334,3 +334,13 @@ pub struct EffectPacket {
     pub data: i32,
     pub disable_relative_volume: bool,
 }
+
+#[derive(PacketDef)]
+pub struct SoundEffectPacket {
+    pub sound_name: String,
+    pub effect_position_x: i32,
+    pub effect_position_y: i32,
+    pub effect_position_z: i32,
+    pub volume: i16,
+    pub pitch: u8
+}
