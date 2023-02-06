@@ -58,3 +58,13 @@ pub struct PlayerDiggingPacket {
     // pub location: Position,
     pub face: i8
 }
+
+#[derive(PacketDef)]
+pub struct PlayerBlockPlacementPacket {
+    // pub location: Position,
+    pub face: i8,
+    // pub held_item: Slot,
+    pub cursor_position_x: i8,
+    pub cursor_position_y: i8,
+    pub cursor_position_z: i8,
+}
