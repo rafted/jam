@@ -8,7 +8,7 @@ pub struct Connection {
 
 impl Connection {
     pub fn handle_loop(self) {
-        let stream = self.stream;
+        let _stream = self.stream;
 
         loop {}
     }
