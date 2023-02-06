@@ -359,3 +359,9 @@ pub struct ParticlePacket {
     pub particle_count: i32,
     pub data: Vec<VarInt>,
 }
+
+#[derive(PacketDef)]
+pub struct ChangeGameStatePacket {
+    pub reason: u8,
+    pub value: i16,
+}
