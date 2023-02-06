@@ -36,3 +36,8 @@ pub struct TimeUpdatePacket {
 //     pub slot: i16,
 //     pub item: Slot,
 // }
+
+// #[derive(PacketDef)]
+// pub struct SpawnPositionPacket {
+//     pub location: Location,
+// }
