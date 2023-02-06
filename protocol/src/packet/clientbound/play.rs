@@ -282,3 +282,9 @@ pub struct MultiBlockChangePacket {
 
     // TODO: ??
 }
+
+#[derive(PacketDef)]
+pub struct BlockChangePacket {
+    // pub location: Position,
+    pub block_id: VarInt
+}
