@@ -83,3 +83,16 @@ pub struct AnimationPacket {
     pub entity_id: VarInt,
     pub animation: u8
 }
+
+#[derive(PacketDef)]
+pub struct SpawnPlayerPacket {
+    pub entity_id: VarInt,
+    // pub uuid: UUID,
+    pub x: i32,
+    pub y: i32,
+    pub z: i32,
+    // pub yaw: Angle,
+    // pub pitch: Angle,
+    pub current_item: i16,
+    // pub metadata: Metadata
+}
