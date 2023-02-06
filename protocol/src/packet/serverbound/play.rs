@@ -126,3 +126,12 @@ pub struct EnchantItemPacket {
     pub window_id: i8,
     pub enchantment: i8,
 }
+
+#[derive(PacketDef)]
+pub struct UpdateSignPacket {
+    // pub location: Position,
+    pub line_1: String,
+    pub line_2: String,
+    pub line_3: String,
+    pub line_4: String,
+}
