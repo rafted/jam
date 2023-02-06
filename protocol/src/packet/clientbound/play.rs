@@ -198,3 +198,13 @@ pub struct EntityLookAndRelativeMovePacket {
     pub on_ground: bool,
 }
 
+#[derive(PacketDef)]
+pub struct EntityTeleportPacket {
+    pub entity_id: VarInt,
+    pub x: i8,
+    pub y: i8,
+    pub z: i8,
+    // pub yaw: Angle,
+    // pub pitch: Angle,
+    pub on_ground: bool,
+}
