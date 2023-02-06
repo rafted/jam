@@ -18,7 +18,7 @@ pub struct JoinGamePacket {
     pub difficulty: u8,
     pub max_players: u8,
     pub level_type: String,
-    // pub reduced_debug_info: bool,
+    pub reduced_debug_info: bool,
 }
 
 #[derive(PacketDef)]
