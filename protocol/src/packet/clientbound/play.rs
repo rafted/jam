@@ -547,3 +547,10 @@ pub struct CombatEventPacket {
 pub struct CameraPacket {
     pub id: VarInt
 }
+
+#[derive(PacketDef)]
+pub struct WorldBorderPacket {
+    pub action: VarInt,
+
+    // TODO: ??
+}
