@@ -1,4 +1,5 @@
 use protocol_macro::PacketDef;
+use crate::position::Position;
 
 use crate::varint::VarInt;
 
@@ -54,13 +55,13 @@ pub struct PlayerPositionAndLookPacket {
 #[derive(PacketDef)]
 pub struct PlayerDiggingPacket {
     pub status: i8,
-    // pub location: Position,
+    pub location: Position,
     pub face: i8,
 }
 
 #[derive(PacketDef)]
 pub struct PlayerBlockPlacementPacket {
-    // pub location: Position,
+    pub location: Position,
     pub face: i8,
     // pub held_item: Slot,
     pub cursor_position_x: i8,
@@ -127,7 +128,7 @@ pub struct EnchantItemPacket {
 
 #[derive(PacketDef)]
 pub struct UpdateSignPacket {
-    // pub location: Position,
+    pub location: Position,
     pub line_1: String,
     pub line_2: String,
     pub line_3: String,
@@ -145,7 +146,7 @@ pub struct PlayerAbilitiesPacket {
 pub struct TabCompletePacket {
     pub text: String,
     pub has_position: bool,
-    // pub looked_at_block: Optional<Position>,
+    pub looked_at_block: Optional<Position>,
 }
 
 #[derive(PacketDef)]
