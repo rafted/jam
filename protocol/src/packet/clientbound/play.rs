@@ -395,3 +395,10 @@ pub struct SetSlotPacket {
     pub slot: i16,
     // pub data: Slot
 }
+
+#[derive(PacketDef)]
+pub struct WindowItemsPacket {
+    pub id: u8,
+    pub count: i16,
+    // pub data: Vec<Slot>
+}
