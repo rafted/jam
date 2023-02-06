@@ -164,3 +164,8 @@ pub struct DestroyEntitiesPacket {
     pub count: VarInt,
     pub entities_id: Vec<VarInt>,
 }
+
+#[derive(PacketDef)]
+pub struct EntityPacket {
+    pub entity_id: VarInt,
+}
