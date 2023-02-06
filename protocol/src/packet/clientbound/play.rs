@@ -313,3 +313,16 @@ pub struct MapChunkBulkPacket {
 
     // pub chunk_data: Vec<Chunk>
 }
+
+#[derive(PacketDef)]
+pub struct ExplosionPacket {
+    pub x: i16,
+    pub y: i16,
+    pub z: i16,
+    pub radius: i16,
+    pub record_count: i32,
+    pub records: Vec<(i8, i8, i8)>,
+    pub player_motion_x: i16,
+    pub player_motion_y: i16,
+    pub player_motion_z: i16,
+}
