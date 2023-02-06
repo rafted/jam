@@ -421,8 +421,8 @@ pub struct ConfirmTransactionPacket {
 #[derive(PacketDef)]
 pub struct UpdateSignPacket {
     // pub location: Position,
-    pub line1: Chat,
-    pub line2: Chat,
-    pub line3: Chat,
-    pub line4: Chat,
+    // pub line1: Chat,
+    // pub line2: Chat,
+    // pub line3: Chat,
+    // pub line4: Chat,
 }
