@@ -1,6 +1,6 @@
 #[derive(TypedBuilder)]
 #[derive(Serialize, Deserialize)]
-pub struct ChatComponent {
+pub struct ChatComponent<'a> {
     text: String,
 
     bold: Option<bool>,
@@ -13,26 +13,26 @@ pub struct ChatComponent {
     color: Option<Color>,
     insertion: Option<String>,
 
-    click_event: Option<&ClickEvent>,
-    hover_event: Option<&HoverEvent>,
+    click_event: Option<ClickEvent>,
+    hover_event: Option<HoverEvent<'a>>,
 
-    extra: Vec<ChatComponent>,
+    extra: Vec<ChatComponent<'a>>,
 }
 
 #[derive(Serialize, Deserialize)]
 pub struct ClickEvent {
-    pub open_url: String,
-    pub run_command: String,
-    pub suggest_command: String,
-    pub change_page: String,
-    pub copy_to_clipboard: String,
+    pub open_url: Option<String>,
+    pub run_command: Option<String>,
+    pub suggest_command: Option<String>,
+    pub change_page: Option<String>,
+    pub copy_to_clipboard: Option<String>,
 }
 
 #[derive(Serialize, Deserialize)]
-pub struct HoverEvent {
-    pub show_text: ChatComponent,
-    // pub show_item: NBTItem,
-    // pub show_entity: NBTEntity,
-    // pub show_achievement: NBTAchievement
+pub struct HoverEvent<'a> {
+    pub show_text: Option<&'a ChatComponent>,
+    // pub show_item: Option<NBTItem>,
+    // pub show_entity: Option<NBTEntity>,
+    // pub show_achievement: Option<NBTAchievement>
 }
 
