@@ -23,3 +23,9 @@ pub struct JoinGamePacket {
 //     pub data: Chat,
 //     pub position: i8
 // }
+
+#[derive(PacketDef)]
+pub struct TimeUpdatePacket {
+    pub world_age: i64,
+    pub time: i64,
+}
