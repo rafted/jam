@@ -217,6 +217,6 @@ pub struct EntityHeadLookPacket {
 
 #[derive(PacketDef)]
 pub struct EntityStatusPacket {
-    pub entity_id: VarInt,
+    pub entity_id: i32,
     pub status: i8,
 }
