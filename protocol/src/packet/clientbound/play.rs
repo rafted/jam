@@ -426,3 +426,18 @@ pub struct UpdateSignPacket {
     // pub line3: Chat,
     // pub line4: Chat,
 }
+#[derive(PacketDef)]
+pub struct MapPacket {
+    pub item_damage: VarInt,
+    pub scale: i8,
+    pub icon_amount: VarInt,
+
+    // TODO: ??
+
+    pub column: i8,
+    pub rows: Optional<i8>,
+    pub x: Optional<i8>,
+    pub z: Optional<i8>,
+    pub length: Optional<VarInt>,
+    pub data: Optional<Vec<u8>>
+}
