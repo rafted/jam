@@ -66,3 +66,8 @@ pub struct PlayerPositionAndLookPacket {
     pub pitch: f32,
     // pub flags: BitField
 }
+
+#[derive(PacketDef)]
+pub struct HeldItemChangePacket {
+    pub slot: i8
+}
