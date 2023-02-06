@@ -133,3 +133,11 @@ pub struct SpawnMobPacket {
     pub velocity_z: i16,
     // pub metadata: Metadata,
 }
+
+#[derive(PacketDef)]
+pub struct SpawnPaintingPacket {
+    pub entity_id: VarInt,
+    pub title: String,
+    // pub location: Position,
+    pub direction: u8,
+}
