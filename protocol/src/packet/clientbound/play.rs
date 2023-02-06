@@ -303,3 +303,13 @@ pub struct BlockBreakAnimation {
     // pub location: Position,
     pub destroy_stage: i8
 }
+
+#[derive(PacketDef)]
+pub struct MapChunkBulkPacket {
+    pub sky_light_sent: boolean,
+    pub column_count: VarInt,
+
+    // TODO: ??
+
+    // pub chunk_data: Vec<Chunk>
+}
