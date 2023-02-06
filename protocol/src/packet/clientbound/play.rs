@@ -17,3 +17,9 @@ pub struct JoinGamePacket {
     pub level_type: String,
     pub reduced_debug_info: bool,
 }
+
+// #[derive(PacketDef)]
+// pub struct ChatMessage {
+//     pub data: Chat,
+//     pub position: i8
+// }
