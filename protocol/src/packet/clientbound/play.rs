@@ -233,3 +233,12 @@ pub struct EntityMetadataPacket {
     pub entity_id: VarInt,
     // pub metadata: Metadata
 }
+
+#[derive(PacketDef)]
+pub struct EntityEffectPacket {
+    pub entity_id: VarInt,
+    pub effect_id: i8,
+    pub amplifier: i8,
+    pub duration: VarInt,
+    pub hide_particles: bool,
+}
