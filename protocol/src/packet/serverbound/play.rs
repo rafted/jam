@@ -120,3 +120,9 @@ pub struct CreativeInventoryActionPacket {
     pub slot: i16,
     // pub clicked_item: Slot,
 }
+
+#[derive(PacketDef)]
+pub struct EnchantItemPacket {
+    pub window_id: i8,
+    pub enchantment: i8,
+}
