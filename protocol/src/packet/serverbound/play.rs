@@ -114,3 +114,9 @@ pub struct ConfirmTransactionPacket {
     pub action_number: i16,
     pub accepted: bool
 }
+
+#[derive(PacketDef)]
+pub struct CreativeInventoryAction {
+    pub slot: i16,
+    // pub clicked_item: Slot,
+}
