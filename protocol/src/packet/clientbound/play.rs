@@ -559,3 +559,9 @@ pub struct WorldBorderPacket {
 pub struct SetCompressionPacket {
     pub threshold: VarInt,
 }
+
+#[derive(PacketDef)]
+pub struct PlayerListHeaderAndFooterPacket {
+    // pub header: Chat,
+    // pub footer: Chat,
+}
