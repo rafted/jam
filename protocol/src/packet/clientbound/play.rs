@@ -344,3 +344,18 @@ pub struct SoundEffectPacket {
     pub volume: i16,
     pub pitch: u8
 }
+
+#[derive(PacketDef)]
+pub struct ParticlePacket {
+    pub particle_id: i32,
+    pub long_distance: bool,
+    pub x: i16,
+    pub y: i16,
+    pub z: i16,
+    pub offset_x: i16,
+    pub offset_y: i16,
+    pub offset_z: i16,
+    pub particle_data: i16,
+    pub particle_count: i32,
+    pub data: Vec<VarInt>,
+}
