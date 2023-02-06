@@ -242,3 +242,9 @@ pub struct EntityEffectPacket {
     pub duration: VarInt,
     pub hide_particles: bool,
 }
+
+#[derive(PacketDef)]
+pub struct RemoveEntityEffectPacket {
+    pub entity_id: VarInt,
+    pub effect_id: i8,
+}
