@@ -214,3 +214,9 @@ pub struct EntityHeadLookPacket {
     pub entity_id: VarInt,
     pub yaw: Angle,
 }
+
+#[derive(PacketDef)]
+pub struct EntityStatusPacket {
+    pub entity_id: VarInt,
+    pub status: i8,
+}
