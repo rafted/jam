@@ -220,3 +220,10 @@ pub struct EntityStatusPacket {
     pub entity_id: i32,
     pub status: i8,
 }
+
+#[derive(PacketDef)]
+pub struct AttachEntityPacket {
+    pub entity_id: i32,
+    pub vehicle_id: i32,
+    pub leash: bool,
+}
