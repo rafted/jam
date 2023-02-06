@@ -410,3 +410,10 @@ pub struct WindowPropertyPacket {
     pub value: i16,
 }
 
+
+#[derive(PacketDef)]
+pub struct ConfirmTransactionPacket {
+    pub id: i8,
+    pub action_number: i16,
+    pub accepted: bool,
+}
