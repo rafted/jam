@@ -1,6 +1,9 @@
 use protocol_macro::PacketDef;
 
-use crate::{varint::VarInt, position::{Position, Angle}};
+use crate::{
+    position::{Angle, Position},
+    varint::VarInt,
+};
 
 #[derive(PacketDef)]
 pub struct KeepAlivePacket {
@@ -19,7 +22,7 @@ pub struct JoinGamePacket {
 }
 
 #[derive(PacketDef)]
-pub struct ChatMessage {
+pub struct ChatMessagePacket {
     // pub data: Chat,
     pub position: i8,
 }

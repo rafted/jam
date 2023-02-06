@@ -21,7 +21,6 @@ pub struct UseEntityPacket {
     pub target_z: Option<f32>,
 }
 
-
 #[derive(PacketDef)]
 pub struct PlayerPacket {
     pub on_ground: bool,
@@ -56,7 +55,7 @@ pub struct PlayerPositionAndLookPacket {
 pub struct PlayerDiggingPacket {
     pub status: i8,
     // pub location: Position,
-    pub face: i8
+    pub face: i8,
 }
 
 #[derive(PacketDef)]
@@ -71,7 +70,7 @@ pub struct PlayerBlockPlacementPacket {
 
 #[derive(PacketDef)]
 pub struct HeldItemChangePacket {
-    pub slot: i16
+    pub slot: i16,
 }
 
 #[derive(PacketDef)]
@@ -81,19 +80,19 @@ pub struct AnimationPacket;
 pub struct EntityActionPacket {
     pub entity_id: VarInt,
     pub action_id: VarInt,
-    pub action_parameter: VarInt
+    pub action_parameter: VarInt,
 }
 
 #[derive(PacketDef)]
 pub struct SteerVehiclePacket {
     pub sideways: f32,
     pub forward: f32,
-    pub flags: u8
+    pub flags: u8,
 }
 
 #[derive(PacketDef)]
 pub struct CloseWindowPacket {
-    pub id: u8
+    pub id: u8,
 }
 
 #[derive(PacketDef)]
@@ -102,7 +101,6 @@ pub struct ClickWindowPacket {
     pub slot: i16,
     pub button: i8,
     pub action_number: i16,
-
     // TODO: ??
 
     // pub clicked_item: Slot
@@ -112,7 +110,7 @@ pub struct ClickWindowPacket {
 pub struct ConfirmTransactionPacket {
     pub window_id: i8,
     pub action_number: i16,
-    pub accepted: bool
+    pub accepted: bool,
 }
 
 #[derive(PacketDef)]
