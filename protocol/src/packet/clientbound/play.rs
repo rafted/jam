@@ -29,3 +29,10 @@ pub struct TimeUpdatePacket {
     pub world_age: i64,
     pub time: i64,
 }
+
+// #[derive(PacketDef)]
+// pub struct EntityEquipmentPacket {
+//     pub entity_id: VarInt,
+//     pub slot: i16,
+//     pub item: Slot,
+// }
