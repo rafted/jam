@@ -374,3 +374,12 @@ pub struct SpawnGlobalEntityPacket {
     pub y: i32,
     pub z: i32,
 }
+
+#[derive(PacketDef)]
+pub struct OpenWindowPacket {
+    pub id: u8,
+    pub type_: String,
+    // pub title: Chat,
+    pub slots: u8,
+    pub entity_id: Optional<i32>,
+}
