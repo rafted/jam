@@ -39,7 +39,7 @@ pub struct EntityEquipmentPacket {
 
 #[derive(PacketDef)]
 pub struct SpawnPositionPacket {
-    // pub location: Location,
+    // pub location: Position,
 }
 
 #[derive(PacketDef)]
@@ -71,3 +71,10 @@ pub struct PlayerPositionAndLookPacket {
 pub struct HeldItemChangePacket {
     pub slot: i8
 }
+
+#[derive(PacketDef)]
+pub struct UseBedPacket {
+    pub entity_id: VarInt,
+    pub location: Position
+}
+
