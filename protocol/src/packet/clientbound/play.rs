@@ -497,3 +497,9 @@ pub struct UpdateScorePacket {
     pub objective_name: String,
     pub value: Option<VarInt>,
 }
+
+#[derive(PacketDef)]
+pub struct DisplayScoreboardPacket {
+    pub position: i8,
+    pub name: String,
+}
