@@ -71,5 +71,5 @@ pub struct PlayerBlockPlacementPacket {
 
 #[derive(PacketDef)]
 pub struct HeldItemChangePacket {
-    pub slot: i8
+    pub slot: i16
 }
