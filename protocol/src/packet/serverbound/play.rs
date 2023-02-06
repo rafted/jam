@@ -142,3 +142,10 @@ pub struct PlayerAbilitiesPacket {
     pub flying_speed: f32,
     pub walking_speed: f32,
 }
+
+#[derive(PacketDef)]
+pub struct TabCompletePacket {
+    pub text: String,
+    pub has_position: bool,
+    // pub looked_at_block: Optional<Position>,
+}
