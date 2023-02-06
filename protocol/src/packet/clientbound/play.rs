@@ -44,9 +44,9 @@ pub struct SpawnPositionPacket {
 
 #[derive(PacketDef)]
 pub struct UpdateHealthPacket {
-    pub health: i16,
+    pub health: f32,
     pub food: VarInt,
-    pub saturation: i16,
+    pub saturation: f32,
 }
 
 #[derive(PacketDef)]
@@ -316,15 +316,15 @@ pub struct MapChunkBulkPacket {
 
 #[derive(PacketDef)]
 pub struct ExplosionPacket {
-    pub x: i16,
-    pub y: i16,
-    pub z: i16,
-    pub radius: i16,
+    pub x: f32,
+    pub y: f32,
+    pub z: f32,
+    pub radius: f32,
     pub record_count: i32,
     pub records: Vec<(i8, i8, i8)>,
-    pub player_motion_x: i16,
-    pub player_motion_y: i16,
-    pub player_motion_z: i16,
+    pub player_motion_x: f32,
+    pub player_motion_y: f32,
+    pub player_motion_z: f32,
 }
 
 #[derive(PacketDef)]
@@ -341,7 +341,7 @@ pub struct SoundEffectPacket {
     pub effect_position_x: i32,
     pub effect_position_y: i32,
     pub effect_position_z: i32,
-    pub volume: i16,
+    pub volume: f32,
     pub pitch: u8
 }
 
@@ -349,13 +349,13 @@ pub struct SoundEffectPacket {
 pub struct ParticlePacket {
     pub particle_id: i32,
     pub long_distance: bool,
-    pub x: i16,
-    pub y: i16,
-    pub z: i16,
-    pub offset_x: i16,
-    pub offset_y: i16,
-    pub offset_z: i16,
-    pub particle_data: i16,
+    pub x: f32,
+    pub y: f32,
+    pub z: f32,
+    pub offset_x: f32,
+    pub offset_y: f32,
+    pub offset_z: f32,
+    pub particle_data: f32,
     pub particle_count: i32,
     pub data: Vec<VarInt>,
 }
@@ -363,7 +363,7 @@ pub struct ParticlePacket {
 #[derive(PacketDef)]
 pub struct ChangeGameStatePacket {
     pub reason: u8,
-    pub value: i16,
+    pub value: f32,
 }
 
 #[derive(PacketDef)]
