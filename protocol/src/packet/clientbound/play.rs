@@ -388,3 +388,10 @@ pub struct OpenWindowPacket {
 pub struct CloseWindowPacket {
     pub id: u8,
 }
+
+#[derive(PacketDef)]
+pub struct SetSlotPacket {
+    pub id: i8,
+    pub slot: i16,
+    pub data: Data
+}
