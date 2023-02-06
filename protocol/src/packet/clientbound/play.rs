@@ -468,3 +468,10 @@ pub struct PlayerListItemPacket {
 
     // TODO: ??
 }
+
+#[derive(PacketDef)]
+pub struct PlayerAbilitiesPacket {
+    pub flags: i8,
+    pub flying_speed: f32,
+    pub fov_modifier: f32,
+}
