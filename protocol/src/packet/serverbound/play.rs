@@ -95,3 +95,15 @@ pub struct SteerVehiclePacket {
 pub struct CloseWindowPacket {
     pub id: u8
 }
+
+#[derive(PacketDef)]
+pub struct ClickWindowPacket {
+    pub id: u8,
+    pub slot: i16,
+    pub button: i8,
+    pub action_number: i16,
+
+    // TODO: ??
+
+    // pub clicked_item: Slot
+}
