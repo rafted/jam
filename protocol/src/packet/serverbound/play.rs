@@ -107,3 +107,10 @@ pub struct ClickWindowPacket {
 
     // pub clicked_item: Slot
 }
+
+#[derive(PacketDef)]
+pub struct ConfirmTransactionPacket {
+    pub window_id: i8,
+    pub action_number: i16,
+    pub accepted: bool
+}
