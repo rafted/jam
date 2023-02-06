@@ -68,3 +68,8 @@ pub struct PlayerBlockPlacementPacket {
     pub cursor_position_y: i8,
     pub cursor_position_z: i8,
 }
+
+#[derive(PacketDef)]
+pub struct HeldItemChangePacket {
+    pub slot: i8
+}
