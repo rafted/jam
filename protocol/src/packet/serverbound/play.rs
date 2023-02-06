@@ -166,6 +166,9 @@ pub struct ClientStatusPacket {
 #[derive(PacketDef)]
 pub struct PluginMessagePacket {
     pub channel: String,
+
+    // TODO: According to #mcdevs, the length of Data is known only from the packet length,
+    // since the packet has no length field of any kind.
     pub data: Vec<i8>,
 }
 

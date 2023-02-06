@@ -1,5 +1,6 @@
 use byteorder::{BigEndian, ReadBytesExt};
 use std::io::{Read, Write};
+use crate::array::CountedArray;
 use crate::chat::ChatComponent;
 
 use crate::varint::VarInt;
@@ -84,6 +85,40 @@ impl Encodable for ChatComponent {
         let encoded = serde_json::to_string(self)?;
 
         String::encode(&encoded, writer)
+    }
+}
+
+// TODO: implement one for i32
+// TODO: Change VarInt and make this for everything that implements
+// the Encodable trait, but is also a number
+impl<B> Encodable for CountedArray<VarInt, B> where B: Encodable {
+    fn decode<T: Read>(reader: &mut T) -> anyhow::Result<Self> {
+        let len = VarInt::decode(reader)?;
+
+        let mut arr = vec![];
+
+        for _ in 0..len {
+            let result = B::decode(reader);
+
+            arr.push(result);
+        }
+
+        Ok(CountedArray {
+            len,
+            arr
+        })
+    }
+
+    fn encode<T: Write>(&self, writer: &mut T) -> anyhow::Result<()> {
+        assert!(self.arr.len() == self.len);
+
+        self.len.encode(writer)?;
+
+        for el in self.arr {
+            el.encode(writer)?;
+        }
+
+        Ok(())
     }
 }
 
