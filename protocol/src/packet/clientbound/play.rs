@@ -117,3 +117,19 @@ pub struct SpawnObjectPacket {
     pub velocity_y: Optional<i16>,
     pub velocity_z: Optional<i16>,
 }
+
+#[derive(PacketDef)]
+pub struct SpawnMobPacket {
+    pub entity_id: VarInt,
+    pub type_: u8,
+    pub x: i32,
+    pub y: i32,
+    pub z: i32,
+    // pub yaw: Angle,
+    // pub pitch: Angle,
+    // pub head_pitch: Angle,
+    pub velocity_x: i16,
+    pub velocity_y: i16,
+    pub velocity_z: i16,
+    // pub metadata: Metadata,
+}
