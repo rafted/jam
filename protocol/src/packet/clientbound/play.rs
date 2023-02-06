@@ -383,3 +383,8 @@ pub struct OpenWindowPacket {
     pub slots: u8,
     pub entity_id: Optional<i32>,
 }
+
+#[derive(PacketDef)]
+pub struct CloseWindowPacket {
+    pub id: u8,
+}
