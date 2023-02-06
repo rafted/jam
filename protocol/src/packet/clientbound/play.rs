@@ -18,11 +18,11 @@ pub struct JoinGamePacket {
     pub reduced_debug_info: bool,
 }
 
-// #[derive(PacketDef)]
-// pub struct ChatMessage {
-//     pub data: Chat,
-//     pub position: i8
-// }
+#[derive(PacketDef)]
+pub struct ChatMessage {
+    // pub data: Chat,
+    pub position: i8
+}
 
 #[derive(PacketDef)]
 pub struct TimeUpdatePacket {
@@ -30,17 +30,17 @@ pub struct TimeUpdatePacket {
     pub time: i64,
 }
 
-// #[derive(PacketDef)]
-// pub struct EntityEquipmentPacket {
-//     pub entity_id: VarInt,
-//     pub slot: i16,
-//     pub item: Slot,
-// }
+#[derive(PacketDef)]
+pub struct EntityEquipmentPacket {
+    pub entity_id: VarInt,
+    pub slot: i16,
+    // pub item: Slot,
+}
 
-// #[derive(PacketDef)]
-// pub struct SpawnPositionPacket {
-//     pub location: Location,
-// }
+#[derive(PacketDef)]
+pub struct SpawnPositionPacket {
+    // pub location: Location,
+}
 
 #[derive(PacketDef)]
 pub struct UpdateHealthPacket {
@@ -57,12 +57,12 @@ pub struct RespawnPacket {
     pub level_type: String,
 }
 
-// #[derive(PacketDef)]
-// pub struct PlayerPositionAndLookPacket {
-//     pub x: f64,
-//     pub y: f64,
-//     pub z: f64,
-//     pub yaw: f32,
-//     pub pitch: f32,
-//     pub flags: BitField
-// }
+#[derive(PacketDef)]
+pub struct PlayerPositionAndLookPacket {
+    pub x: f64,
+    pub y: f64,
+    pub z: f64,
+    pub yaw: f32,
+    pub pitch: f32,
+    // pub flags: BitField
+}
