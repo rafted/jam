@@ -21,7 +21,7 @@ pub struct JoinGamePacket {
 #[derive(PacketDef)]
 pub struct ChatMessage {
     // pub data: Chat,
-    pub position: i8
+    pub position: i8,
 }
 
 #[derive(PacketDef)]
@@ -69,19 +69,19 @@ pub struct PlayerPositionAndLookPacket {
 
 #[derive(PacketDef)]
 pub struct HeldItemChangePacket {
-    pub slot: i8
+    pub slot: i8,
 }
 
 #[derive(PacketDef)]
 pub struct UseBedPacket {
     pub entity_id: VarInt,
-    pub location: Position
+    pub location: Position,
 }
 
 #[derive(PacketDef)]
 pub struct AnimationPacket {
     pub entity_id: VarInt,
-    pub animation: u8
+    pub animation: u8,
 }
 
 #[derive(PacketDef)]
@@ -148,7 +148,7 @@ pub struct SpawnExperienceOrbPacket {
     pub x: i32,
     pub y: i32,
     pub z: i32,
-    pub count: i16
+    pub count: i16,
 }
 
 #[derive(PacketDef)]
@@ -260,7 +260,6 @@ pub struct SetExperiencePacket {
 pub struct EntityPropertiesPacket {
     pub entity_id: VarInt,
     pub properties_amount: i32,
-
     // TODO: ??
 }
 
@@ -279,14 +278,13 @@ pub struct MultiBlockChangePacket {
     pub chunk_x: i32,
     pub chunk_z: i32,
     pub record_count: VarInt,
-
     // TODO: ??
 }
 
 #[derive(PacketDef)]
 pub struct BlockChangePacket {
     // pub location: Position,
-    pub block_id: VarInt
+    pub block_id: VarInt,
 }
 
 #[derive(PacketDef)]
@@ -294,21 +292,20 @@ pub struct BlockActionPacket {
     // pub location: Position,
     pub byte_1: u8,
     pub byte_2: u8,
-    pub block_type: VarInt
+    pub block_type: VarInt,
 }
 
 #[derive(PacketDef)]
 pub struct BlockBreakAnimationPacket {
     pub entity_id: VarInt,
     // pub location: Position,
-    pub destroy_stage: i8
+    pub destroy_stage: i8,
 }
 
 #[derive(PacketDef)]
 pub struct MapChunkBulkPacket {
     pub sky_light_sent: boolean,
     pub column_count: VarInt,
-
     // TODO: ??
 
     // pub chunk_data: Vec<Chunk>
@@ -342,7 +339,7 @@ pub struct SoundEffectPacket {
     pub effect_position_y: i32,
     pub effect_position_z: i32,
     pub volume: f32,
-    pub pitch: u8
+    pub pitch: u8,
 }
 
 #[derive(PacketDef)]
@@ -410,7 +407,6 @@ pub struct WindowPropertyPacket {
     pub value: i16,
 }
 
-
 #[derive(PacketDef)]
 pub struct ConfirmTransactionPacket {
     pub id: i8,
@@ -426,6 +422,7 @@ pub struct UpdateSignPacket {
     // pub line3: Chat,
     // pub line4: Chat,
 }
+
 #[derive(PacketDef)]
 pub struct MapPacket {
     pub item_damage: VarInt,
@@ -433,13 +430,12 @@ pub struct MapPacket {
     pub icon_amount: VarInt,
 
     // TODO: ??
-
     pub column: i8,
     pub rows: Optional<i8>,
     pub x: Optional<i8>,
     pub z: Optional<i8>,
     pub length: Optional<VarInt>,
-    pub data: Optional<Vec<u8>>
+    pub data: Optional<Vec<u8>>,
 }
 
 #[derive(PacketDef)]
@@ -457,7 +453,6 @@ pub struct OpenSignEditorPacket {
 #[derive(PacketDef)]
 pub struct StatisticsPacket {
     pub count: VarInt,
-
     // TODO: ??
 }
 
@@ -465,7 +460,6 @@ pub struct StatisticsPacket {
 pub struct PlayerListItemPacket {
     pub action: VarInt,
     pub players_amount: VarInt,
-
     // TODO: ??
 }
 
@@ -545,13 +539,12 @@ pub struct CombatEventPacket {
 
 #[derive(PacketDef)]
 pub struct CameraPacket {
-    pub id: VarInt
+    pub id: VarInt,
 }
 
 #[derive(PacketDef)]
 pub struct WorldBorderPacket {
     pub action: VarInt,
-
     // TODO: ??
 }
 
