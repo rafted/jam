@@ -158,3 +158,9 @@ pub struct EntityVelocityPacket {
     pub velocity_y: i16,
     pub velocity_z: i16,
 }
+
+#[derive(PacketDef)]
+pub struct DestroyEntitiesPacket {
+    pub count: VarInt,
+    pub entities_id: Vec<VarInt>,
+}
