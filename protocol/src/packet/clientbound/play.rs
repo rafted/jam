@@ -169,3 +169,12 @@ pub struct DestroyEntitiesPacket {
 pub struct EntityPacket {
     pub entity_id: VarInt,
 }
+
+#[derive(PacketDef)]
+pub struct EntityRelativeMovePacket {
+    pub entity_id: VarInt,
+    pub delta_x: i8,
+    pub delta_y: i8,
+    pub delta_z: i8,
+    pub on_ground: bool,
+}
