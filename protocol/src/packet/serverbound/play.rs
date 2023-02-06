@@ -149,3 +149,12 @@ pub struct TabCompletePacket {
     pub has_position: bool,
     // pub looked_at_block: Optional<Position>,
 }
+
+#[derive(PacketDef)]
+pub struct ClientSettingsPacket {
+    pub locale: String,
+    pub view_distance: i8,
+    pub chat_mode: i8,
+    pub chat_colors: bool,
+    pub display_skin_parts: u8,
+}
