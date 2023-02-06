@@ -56,3 +56,13 @@ pub struct RespawnPacket {
     pub gamemode: u8,
     pub level_type: String,
 }
+
+// #[derive(PacketDef)]
+// pub struct PlayerPositionAndLookPacket {
+//     pub x: f64,
+//     pub y: f64,
+//     pub z: f64,
+//     pub yaw: f32,
+//     pub pitch: f32,
+//     pub flags: BitField
+// }
