@@ -96,3 +96,9 @@ pub struct SpawnPlayerPacket {
     pub current_item: i16,
     // pub metadata: Metadata
 }
+
+#[derive(PacketDef)]
+pub struct CollectItemPacket {
+    pub collected_entity_id: VarInt,
+    pub collector_entity_id: VarInt,
+}
