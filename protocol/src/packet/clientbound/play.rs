@@ -460,3 +460,11 @@ pub struct StatisticsPacket {
 
     // TODO: ??
 }
+
+#[derive(PacketDef)]
+pub struct PlayerListItemPacket {
+    pub action: VarInt,
+    pub players_amount: VarInt,
+
+    // TODO: ??
+}
