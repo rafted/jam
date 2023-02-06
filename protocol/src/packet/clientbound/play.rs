@@ -565,3 +565,9 @@ pub struct PlayerListHeaderAndFooterPacket {
     // pub header: Chat,
     // pub footer: Chat,
 }
+
+#[derive(PacketDef)]
+pub struct ResourcePackSendPacket {
+    pub url: String,
+    pub hash: String,
+}
