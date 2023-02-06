@@ -255,3 +255,11 @@ pub struct SetExperiencePacket {
     pub level: VarInt,
     pub total_exp: VarInt,
 }
+
+#[derive(PacketDef)]
+pub struct EntityPropertiesPacket {
+    pub entity_id: VarInt,
+    pub properties_amount: i32,
+
+    // TODO: ??
+}
