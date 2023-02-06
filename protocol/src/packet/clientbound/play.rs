@@ -102,3 +102,18 @@ pub struct CollectItemPacket {
     pub collected_entity_id: VarInt,
     pub collector_entity_id: VarInt,
 }
+
+#[derive(PacketDef)]
+pub struct SpawnObjectPacket {
+    pub entity_id: VarInt,
+    pub type_: i8,
+    pub x: i32,
+    pub y: i32,
+    pub z: i32,
+    // pub pitch: Angle,
+    // pub yaw: Angle,
+    pub data: i32,
+    pub velocity_x: Optional<i16>,
+    pub velocity_y: Optional<i16>,
+    pub velocity_z: Optional<i16>,
+}
