@@ -13,8 +13,8 @@ pub struct ChatComponent {
     color: Option<Color>,
     insertion: Option<String>,
 
-    click_event: Option<ClickEvent>,
-    hover_event: Option<HoverEvent>,
+    click_event: Option<&ClickEvent>,
+    hover_event: Option<&HoverEvent>,
 
     extra: Vec<ChatComponent>,
 }
