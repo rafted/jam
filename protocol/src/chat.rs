@@ -1,5 +1,9 @@
-#[derive(TypedBuilder)]
-#[derive(Serialize, Deserialize)]
+use std::marker::PhantomData;
+
+use serde::{Deserialize, Serialize};
+use typed_builder::TypedBuilder;
+
+#[derive(TypedBuilder, Serialize, Deserialize)]
 pub struct ChatComponent<'a> {
     text: String,
 
@@ -10,7 +14,7 @@ pub struct ChatComponent<'a> {
     obfuscated: Option<bool>,
     font: Option<String>,
 
-    color: Option<Color>,
+    // color: Option<Color>,
     insertion: Option<String>,
 
     click_event: Option<ClickEvent>,
@@ -30,9 +34,6 @@ pub struct ClickEvent {
 
 #[derive(Serialize, Deserialize)]
 pub struct HoverEvent<'a> {
-    pub show_text: Option<&'a ChatComponent<'a>>,
-    // pub show_item: Option<NBTItem>,
-    // pub show_entity: Option<NBTEntity>,
-    // pub show_achievement: Option<NBTAchievement>
+    // pub show_text: Option<&'a ChatComponent<'a>>,
+    phantom: PhantomData<&'a str>,
 }
-

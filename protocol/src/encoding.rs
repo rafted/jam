@@ -1,7 +1,7 @@
-use byteorder::{BigEndian, ReadBytesExt};
-use std::io::{Read, Write};
 use crate::array::CountedArray;
 use crate::chat::ChatComponent;
+use byteorder::{BigEndian, ReadBytesExt};
+use std::io::{Read, Write};
 
 use crate::varint::VarInt;
 
@@ -14,44 +14,6 @@ where
 }
 
 // move this into separate files
-impl Encodable for VarInt {
-    fn decode<T: Read>(reader: &mut T) -> anyhow::Result<Self> {
-        let mut result = 0;
-        let mut shift = 0;
-
-        loop {
-            let mut byte = [0];
-
-            reader.read_exact(&mut byte)?;
-
-            let value = (byte[0] & 0b01111111) as i32;
-
-            result |= value << shift;
-            shift += 7;
-
-            if byte[0] & 0b10000000 == 0 {
-                break;
-            }
-        }
-
-        Ok(VarInt(result))
-    }
-
-    fn encode<T: Write>(&self, writer: &mut T) -> anyhow::Result<()> {
-        let mut remaining = self.0;
-        while remaining >= 0b10000000 {
-            let byte = (remaining as u8) | 0b10000000;
-
-            writer.write_all(&[byte])?;
-            remaining >>= 7;
-        }
-        let byte = remaining as u8;
-
-        writer.write_all(&[byte])?;
-        Ok(())
-    }
-}
-
 impl Encodable for String {
     fn decode<T: Read>(reader: &mut T) -> anyhow::Result<Self> {
         let string_len = VarInt::decode(reader)?;
@@ -74,11 +36,12 @@ impl Encodable for String {
     }
 }
 
-impl Encodable for ChatComponent {
+impl<'a> Encodable for ChatComponent<'a> {
     fn decode<T: Read>(reader: &mut T) -> anyhow::Result<Self> {
         let encoded = String::decode(reader)?;
+        let component = serde_json::from_str(&encoded)?;
 
-        return serde_json::from_str(&encoded)?
+        return Ok(component);
     }
 
     fn encode<T: Write>(&self, writer: &mut T) -> anyhow::Result<()> {
@@ -88,33 +51,31 @@ impl Encodable for ChatComponent {
     }
 }
 
-// TODO: implement one for i32
-// TODO: Change VarInt and make this for everything that implements
-// the Encodable trait, but is also a number
-impl<B> Encodable for CountedArray<VarInt, B> where B: Encodable {
+impl<K, U> Encodable for CountedArray<K, U>
+where
+    usize: PartialEq<K>,
+    K: Encodable + Into<usize> + From<usize>,
+    U: Encodable,
+{
     fn decode<T: Read>(reader: &mut T) -> anyhow::Result<Self> {
-        let len = VarInt::decode(reader)?;
-
-        let mut arr = vec![];
+        let mut vec = Vec::<U>::new();
+        let len: usize = K::decode(reader)?.into();
 
         for _ in 0..len {
-            let result = B::decode(reader);
-
-            arr.push(result);
+            vec.push(U::decode(reader)?);
         }
 
         Ok(CountedArray {
-            len,
-            arr
+            len: len.into(),
+            arr: vec,
         })
     }
 
     fn encode<T: Write>(&self, writer: &mut T) -> anyhow::Result<()> {
         assert!(self.arr.len() == self.len);
-
         self.len.encode(writer)?;
 
-        for el in self.arr {
+        for el in self.arr.iter() {
             el.encode(writer)?;
         }
 

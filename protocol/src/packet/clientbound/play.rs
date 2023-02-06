@@ -19,7 +19,7 @@ pub struct JoinGamePacket {
     pub difficulty: u8,
     pub max_players: u8,
     pub level_type: String,
-    pub reduced_debug_info: bool,
+    // pub reduced_debug_info: bool,
 }
 
 // #[derive(PacketDef)]
@@ -117,9 +117,9 @@ pub struct SpawnObjectPacket {
     // pub pitch: Angle,
     // pub yaw: Angle,
     pub data: i32,
-    pub velocity_x: Option<i16>,
-    pub velocity_y: Option<i16>,
-    pub velocity_z: Option<i16>,
+    // pub velocity_x: Option<i16>,
+    // pub velocity_y: Option<i16>,
+    // pub velocity_z: Option<i16>,
 }
 
 #[derive(PacketDef)]
@@ -166,7 +166,7 @@ pub struct EntityVelocityPacket {
 #[derive(PacketDef)]
 pub struct DestroyEntitiesPacket {
     pub count: VarInt,
-    pub entities_id: Vec<VarInt>,
+    // pub entities_id: Vec<VarInt>,
 }
 
 #[derive(PacketDef)]
@@ -180,7 +180,7 @@ pub struct EntityRelativeMovePacket {
     pub delta_x: i8,
     pub delta_y: i8,
     pub delta_z: i8,
-    pub on_ground: bool,
+    // pub on_ground: bool,
 }
 
 #[derive(PacketDef)]
@@ -188,7 +188,7 @@ pub struct EntityLookPacket {
     pub entity_id: VarInt,
     // pub yaw: Angle,
     // pub pitch: Angle,
-    pub on_ground: bool,
+    // pub on_ground: bool,
 }
 
 #[derive(PacketDef)]
@@ -199,7 +199,7 @@ pub struct EntityLookAndRelativeMovePacket {
     pub delta_z: i8,
     // pub yaw: Angle,
     // pub pitch: Angle,
-    pub on_ground: bool,
+    // pub on_ground: bool,
 }
 
 #[derive(PacketDef)]
@@ -210,7 +210,7 @@ pub struct EntityTeleportPacket {
     pub z: i8,
     pub yaw: Angle,
     pub pitch: Angle,
-    pub on_ground: bool,
+    // pub on_ground: bool,
 }
 
 #[derive(PacketDef)]
@@ -229,7 +229,7 @@ pub struct EntityStatusPacket {
 pub struct AttachEntityPacket {
     pub entity_id: i32,
     pub vehicle_id: i32,
-    pub leash: bool,
+    // pub leash: bool,
 }
 
 #[derive(PacketDef)]
@@ -244,7 +244,7 @@ pub struct EntityEffectPacket {
     pub effect_id: i8,
     pub amplifier: i8,
     pub duration: VarInt,
-    pub hide_particles: bool,
+    // pub hide_particles: bool,
 }
 
 #[derive(PacketDef)]
@@ -322,7 +322,7 @@ pub struct ExplosionPacket {
     pub z: f32,
     pub radius: f32,
     pub record_count: i32,
-    pub records: Vec<(i8, i8, i8)>,
+    // pub records: Vec<(i8, i8, i8)>,
     pub player_motion_x: f32,
     pub player_motion_y: f32,
     pub player_motion_z: f32,
@@ -333,7 +333,7 @@ pub struct EffectPacket {
     pub effect_id: i32,
     pub location: Position,
     pub data: i32,
-    pub disable_relative_volume: bool,
+    // pub disable_relative_volume: bool,
 }
 
 #[derive(PacketDef)]
@@ -349,7 +349,7 @@ pub struct SoundEffectPacket {
 #[derive(PacketDef)]
 pub struct ParticlePacket {
     pub particle_id: i32,
-    pub long_distance: bool,
+    // pub long_distance: bool,
     pub x: f32,
     pub y: f32,
     pub z: f32,
@@ -358,7 +358,7 @@ pub struct ParticlePacket {
     pub offset_z: f32,
     pub particle_data: f32,
     pub particle_count: i32,
-    pub data: Vec<VarInt>,
+    // pub data: Vec<VarInt>,
 }
 
 #[derive(PacketDef)]
@@ -415,7 +415,7 @@ pub struct WindowPropertyPacket {
 pub struct ConfirmTransactionPacket {
     pub id: i8,
     pub action_number: i16,
-    pub accepted: bool,
+    // pub accepted: bool,
 }
 
 // #[derive(PacketDef)]
@@ -435,11 +435,11 @@ pub struct MapPacket {
 
     // TODO: ??
     pub column: i8,
-    pub rows: Option<i8>,
-    pub x: Option<i8>,
-    pub z: Option<i8>,
-    pub length: Option<VarInt>,
-    pub data: Option<Vec<u8>>,
+    // pub rows: Option<i8>,
+    // pub x: Option<i8>,
+    // pub z: Option<i8>,
+    // pub length: Option<VarInt>,
+    // pub data: Option<Vec<u8>>,
 }
 
 #[derive(PacketDef)]
@@ -477,15 +477,15 @@ pub struct PlayerAbilitiesPacket {
 #[derive(PacketDef)]
 pub struct TabCompletePacket {
     pub flags: VarInt,
-    pub matches: Vec<String>,
+    // pub matches: Vec<String>,
 }
 
 #[derive(PacketDef)]
 pub struct ScoreboardObjectivePacket {
     pub name: String,
     pub mode: i8,
-    pub value: Option<String>,
-    pub type_: Option<String>,
+    // pub value: Option<String>,
+    // pub type_: Option<String>,
 }
 
 #[derive(PacketDef)]
@@ -493,7 +493,7 @@ pub struct UpdateScorePacket {
     pub name: String,
     pub action: i8,
     pub objective_name: String,
-    pub value: Option<VarInt>,
+    // pub value: Option<VarInt>,
 }
 
 #[derive(PacketDef)]
@@ -506,20 +506,20 @@ pub struct DisplayScoreboardPacket {
 pub struct TeamPacket {
     pub name: String,
     pub mode: i8,
-    pub display_name: Option<String>,
-    pub prefix: Option<String>,
-    pub suffix: Option<String>,
-    pub friendly_fire: Option<i8>,
-    pub name_tag_visibility: Option<String>,
-    pub color: Option<i8>,
-    pub players_amount: Option<VarInt>,
-    pub players: Option<String>,
+    // pub display_name: Option<String>,
+    // pub prefix: Option<String>,
+    // pub suffix: Option<String>,
+    // pub friendly_fire: Option<i8>,
+    // pub name_tag_visibility: Option<String>,
+    // pub color: Option<i8>,
+    // pub players_amount: Option<VarInt>,
+    // pub players: Option<String>,
 }
 
 #[derive(PacketDef)]
 pub struct PluginMessagePacket {
     pub channel: String,
-    pub data: Vec<i8>,
+    // pub data: Vec<i8>,
 }
 
 // #[derive(PacketDef)]
@@ -535,9 +535,9 @@ pub struct ServerDifficultyPacket {
 #[derive(PacketDef)]
 pub struct CombatEventPacket {
     pub event: VarInt,
-    pub duration: Option<VarInt>,
-    pub player_id: Option<VarInt>,
-    pub entity_id: Option<i32>,
+    // pub duration: Option<VarInt>,
+    // pub player_id: Option<VarInt>,
+    // pub entity_id: Option<i32>,
     pub message: String,
 }
 

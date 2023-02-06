@@ -1,5 +1,5 @@
-use protocol_macro::PacketDef;
 use crate::position::Position;
+use protocol_macro::PacketDef;
 
 use crate::varint::VarInt;
 
@@ -17,14 +17,14 @@ pub struct ChatMessagePacket {
 pub struct UseEntityPacket {
     pub target: VarInt,
     pub type_: VarInt,
-    pub target_x: Option<f32>,
-    pub target_y: Option<f32>,
-    pub target_z: Option<f32>,
+    // pub target_x: Option<f32>,
+    // pub target_y: Option<f32>,
+    // pub target_z: Option<f32>,
 }
 
 #[derive(PacketDef)]
 pub struct PlayerPacket {
-    pub on_ground: bool,
+    // pub on_ground: bool,
 }
 
 #[derive(PacketDef)]
@@ -32,14 +32,14 @@ pub struct PlayerPositionPacket {
     pub x: f64,
     pub y: f64,
     pub z: f64,
-    pub on_ground: bool,
+    // pub on_ground: bool,
 }
 
 #[derive(PacketDef)]
 pub struct PlayerPositionLook {
     pub yaw: f32,
     pub pitch: f32,
-    pub on_ground: bool,
+    // pub on_ground: bool,
 }
 
 #[derive(PacketDef)]
@@ -49,7 +49,7 @@ pub struct PlayerPositionAndLookPacket {
     pub z: f64,
     pub yaw: f32,
     pub pitch: f32,
-    pub on_ground: bool,
+    // pub on_ground: bool,
 }
 
 #[derive(PacketDef)]
@@ -75,7 +75,7 @@ pub struct HeldItemChangePacket {
 }
 
 #[derive(PacketDef)]
-pub struct AnimationPacket;
+pub struct AnimationPacket {}
 
 #[derive(PacketDef)]
 pub struct EntityActionPacket {
@@ -111,7 +111,7 @@ pub struct ClickWindowPacket {
 pub struct ConfirmTransactionPacket {
     pub window_id: i8,
     pub action_number: i16,
-    pub accepted: bool,
+    // pub accepted: bool,
 }
 
 #[derive(PacketDef)]
@@ -145,8 +145,8 @@ pub struct PlayerAbilitiesPacket {
 #[derive(PacketDef)]
 pub struct TabCompletePacket {
     pub text: String,
-    pub has_position: bool,
-    pub looked_at_block: Optional<Position>,
+    // pub has_position: bool,
+    // pub looked_at_block: Option<Position>,
 }
 
 #[derive(PacketDef)]
@@ -154,7 +154,7 @@ pub struct ClientSettingsPacket {
     pub locale: String,
     pub view_distance: i8,
     pub chat_mode: i8,
-    pub chat_colors: bool,
+    // pub chat_colors: bool,
     pub display_skin_parts: u8,
 }
 
@@ -166,10 +166,9 @@ pub struct ClientStatusPacket {
 #[derive(PacketDef)]
 pub struct PluginMessagePacket {
     pub channel: String,
-
     // TODO: According to #mcdevs, the length of Data is known only from the packet length,
     // since the packet has no length field of any kind.
-    pub data: Vec<i8>,
+    // pub data: Vec<i8>,
 }
 
 #[derive(PacketDef)]
