@@ -4,6 +4,7 @@ use crate::{
     position::{Angle, Position},
     varint::VarInt,
 };
+// use crate::chat::ChatComponent;
 
 #[derive(PacketDef)]
 pub struct KeepAlivePacket {
@@ -21,11 +22,11 @@ pub struct JoinGamePacket {
     pub reduced_debug_info: bool,
 }
 
-#[derive(PacketDef)]
-pub struct ChatMessagePacket {
-    // pub data: Chat,
-    pub position: i8,
-}
+// #[derive(PacketDef)]
+// pub struct ChatMessagePacket<'a> {
+//     pub data: ChatComponent<'a>,
+//     pub position: i8,
+// }
 
 #[derive(PacketDef)]
 pub struct TimeUpdatePacket {
@@ -375,14 +376,14 @@ pub struct SpawnGlobalEntityPacket {
     pub z: i32,
 }
 
-#[derive(PacketDef)]
-pub struct OpenWindowPacket {
-    pub id: u8,
-    pub type_: String,
-    // pub title: Chat,
-    pub slots: u8,
-    pub entity_id: Option<i32>,
-}
+// #[derive(PacketDef)]
+// pub struct OpenWindowPacket<'a> {
+//     pub id: u8,
+//     pub type_: String,
+//     pub title: ChatComponent<'a>,
+//     pub slots: u8,
+//     pub entity_id: Option<i32>,
+// }
 
 #[derive(PacketDef)]
 pub struct CloseWindowPacket {
@@ -417,14 +418,14 @@ pub struct ConfirmTransactionPacket {
     pub accepted: bool,
 }
 
-#[derive(PacketDef)]
-pub struct UpdateSignPacket {
-    pub location: Position,
-    // pub line1: Chat,
-    // pub line2: Chat,
-    // pub line3: Chat,
-    // pub line4: Chat,
-}
+// #[derive(PacketDef)]
+// pub struct UpdateSignPacket<'a> {
+//     pub location: Position,
+//     pub line1: ChatComponent<'a>,
+//     pub line2: ChatComponent<'a>,
+//     pub line3: ChatComponent<'a>,
+//     pub line4: ChatComponent<'a>,
+// }
 
 #[derive(PacketDef)]
 pub struct MapPacket {
@@ -521,10 +522,10 @@ pub struct PluginMessagePacket {
     pub data: Vec<i8>,
 }
 
-#[derive(PacketDef)]
-pub struct DisconnectPacket {
-    // pub reason: Chat,
-}
+// #[derive(PacketDef)]
+// pub struct DisconnectPacket<'a> {
+//     pub reason: ChatComponent<'a>,
+// }
 
 #[derive(PacketDef)]
 pub struct ServerDifficultyPacket {
@@ -556,11 +557,11 @@ pub struct SetCompressionPacket {
     pub threshold: VarInt,
 }
 
-#[derive(PacketDef)]
-pub struct PlayerListHeaderAndFooterPacket {
-    // pub header: Chat,
-    // pub footer: Chat,
-}
+// #[derive(PacketDef)]
+// pub struct PlayerListHeaderAndFooterPacket<'a> {
+//     pub header: ChatComponent<'a>,
+//     pub footer: ChatComponent<'a>,
+// }
 
 #[derive(PacketDef)]
 pub struct ResourcePackSendPacket {
