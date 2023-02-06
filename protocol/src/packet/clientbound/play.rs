@@ -542,3 +542,8 @@ pub struct CombatEventPacket {
     pub entity_id: Optional<i32>,
     pub message: String,
 }
+
+#[derive(PacketDef)]
+pub struct CameraPacket {
+    pub id: VarInt
+}
