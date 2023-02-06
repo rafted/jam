@@ -73,3 +73,6 @@ pub struct PlayerBlockPlacementPacket {
 pub struct HeldItemChangePacket {
     pub slot: i16
 }
+
+#[derive(PacketDef)]
+pub struct AnimationPacket;
