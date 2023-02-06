@@ -393,5 +393,5 @@ pub struct CloseWindowPacket {
 pub struct SetSlotPacket {
     pub id: i8,
     pub slot: i16,
-    pub data: Data
+    // pub data: Slot
 }
