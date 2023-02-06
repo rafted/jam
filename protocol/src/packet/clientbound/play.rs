@@ -441,3 +441,10 @@ pub struct MapPacket {
     pub length: Optional<VarInt>,
     pub data: Optional<Vec<u8>>
 }
+
+#[derive(PacketDef)]
+pub struct UpdateBlockEntityPacket {
+    // pub location: Position,
+    pub action: u8,
+    // pub data: NBTTag
+}
