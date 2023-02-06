@@ -41,3 +41,10 @@ pub struct TimeUpdatePacket {
 // pub struct SpawnPositionPacket {
 //     pub location: Location,
 // }
+
+#[derive(PacketDef)]
+pub struct UpdateHealthPacket {
+    pub health: i16,
+    pub food: VarInt,
+    pub saturation: i16,
+}
