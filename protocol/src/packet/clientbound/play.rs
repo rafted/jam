@@ -528,3 +528,8 @@ pub struct PluginMessagePacket {
 pub struct DisconnectPacket {
     // pub reason: Chat,
 }
+
+#[derive(PacketDef)]
+pub struct ServerDifficultyPacket {
+    pub difficulty: u8,
+}
