@@ -248,3 +248,10 @@ pub struct RemoveEntityEffectPacket {
     pub entity_id: VarInt,
     pub effect_id: i8,
 }
+
+#[derive(PacketDef)]
+pub struct SetExperiencePacket {
+    pub bar: f32,
+    pub level: VarInt,
+    pub total_exp: VarInt,
+}
