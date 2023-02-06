@@ -21,3 +21,33 @@ pub struct UseEntityPacket {
     pub target_z: Option<f32>,
 }
 
+
+#[derive(PacketDef)]
+pub struct PlayerPacket {
+    pub on_ground: bool,
+}
+
+#[derive(PacketDef)]
+pub struct PlayerPositionPacket {
+    pub x: f64,
+    pub y: f64,
+    pub z: f64,
+    pub on_ground: bool,
+}
+
+#[derive(PacketDef)]
+pub struct PlayerPositionLook {
+    pub yaw: f32,
+    pub pitch: f32,
+    pub on_ground: bool,
+}
+
+#[derive(PacketDef)]
+pub struct PlayerPositionAndLookPacket {
+    pub x: f64,
+    pub y: f64,
+    pub z: f64,
+    pub yaw: f32,
+    pub pitch: f32,
+    pub on_ground: bool,
+}
