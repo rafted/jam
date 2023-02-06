@@ -48,3 +48,11 @@ pub struct UpdateHealthPacket {
     pub food: VarInt,
     pub saturation: i16,
 }
+
+#[derive(PacketDef)]
+pub struct RespawnPacket {
+    pub dimension: i32,
+    pub difficulty: u8,
+    pub gamemode: u8,
+    pub level_type: String,
+}
