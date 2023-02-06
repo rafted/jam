@@ -503,3 +503,17 @@ pub struct DisplayScoreboardPacket {
     pub position: i8,
     pub name: String,
 }
+
+#[derive(PacketDef)]
+pub struct TeamPacket {
+    pub name: String,
+    pub mode: i8,
+    pub display_name: Optional<String>,
+    pub prefix: Optional<String>,
+    pub suffix: Optional<String>,
+    pub friendly_fire: Optional<i8>,
+    pub name_tag_visibility: Optional<String>,
+    pub color: Optional<i8>,
+    pub players_amount: Optional<VarInt>,
+    pub players: Optional<String>,
+}
