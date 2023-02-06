@@ -263,3 +263,12 @@ pub struct EntityPropertiesPacket {
 
     // TODO: ??
 }
+#[derive(PacketDef)]
+pub struct ChunkDataPacket {
+    pub chunk_x: i32,
+    pub chunk_z: i32,
+    pub ground_up_continuous: bool,
+    pub primary_bit_mask: u16,
+    pub size: VarInt,
+    // pub data: Chunk
+}
