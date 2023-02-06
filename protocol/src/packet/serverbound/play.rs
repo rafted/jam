@@ -90,3 +90,8 @@ pub struct SteerVehiclePacket {
     pub forward: f32,
     pub flags: u8
 }
+
+#[derive(PacketDef)]
+pub struct CloseWindowPacket {
+    pub id: u8
+}
