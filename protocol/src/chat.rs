@@ -16,7 +16,7 @@ pub struct ChatComponent<'a> {
     click_event: Option<ClickEvent>,
     hover_event: Option<HoverEvent<'a>>,
 
-    extra: Vec<ChatComponent<'a>>,
+    extra: Option<Vec<ChatComponent<'a>>>,
 }
 
 #[derive(Serialize, Deserialize)]
