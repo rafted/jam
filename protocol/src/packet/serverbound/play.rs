@@ -84,3 +84,9 @@ pub struct EntityActionPacket {
     pub action_parameter: VarInt
 }
 
+#[derive(PacketDef)]
+pub struct SteerVehiclePacket {
+    pub sideways: f32,
+    pub forward: f32,
+    pub flags: u8
+}
