@@ -489,3 +489,11 @@ pub struct ScoreboardObjectivePacket {
     pub value: Option<String>,
     pub type_: Option<String>,
 }
+
+#[derive(PacketDef)]
+pub struct UpdateScorePacket {
+    pub name: String,
+    pub action: i8,
+    pub objective_name: String,
+    pub value: Option<VarInt>,
+}
