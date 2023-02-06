@@ -448,3 +448,8 @@ pub struct UpdateBlockEntityPacket {
     pub action: u8,
     // pub data: NBTTag
 }
+
+#[derive(PacketDef)]
+pub struct OpenSignEditorPacket {
+    pub location: Position,
+}
