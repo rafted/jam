@@ -517,3 +517,9 @@ pub struct TeamPacket {
     pub players_amount: Optional<VarInt>,
     pub players: Optional<String>,
 }
+
+#[derive(PacketDef)]
+pub struct PluginMessagePacket {
+    pub channel: String,
+    pub data: Vec<i8>,
+}
