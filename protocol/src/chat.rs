@@ -3,18 +3,18 @@
 pub struct ChatComponent {
     text: String,
 
-    bold: bool,
-    italic: bool,
-    underlined: bool,
-    strikethrough: bool,
-    obfuscated: bool,
-    font: String,
+    bold: Option<bool>,
+    italic: Option<bool>,
+    underlined: Option<bool>,
+    strikethrough: Option<bool>,
+    obfuscated: Option<bool>,
+    font: Option<String>,
 
-    color: Color,
-    insertion: String,
+    color: Option<Color>,
+    insertion: Option<String>,
 
-    click_event: ClickEvent,
-    hover_event: HoverEvent,
+    click_event: Option<ClickEvent>,
+    hover_event: Option<HoverEvent>,
 
     extra: Vec<ChatComponent>,
 }
