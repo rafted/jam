@@ -296,3 +296,10 @@ pub struct BlockActionPacket {
     pub byte_2: u8,
     pub block_type: VarInt
 }
+
+#[derive(PacketDef)]
+pub struct BlockBreakAnimation {
+    pub entity_id: VarInt,
+    // pub location: Position,
+    pub destroy_stage: i8
+}
