@@ -56,5 +56,5 @@ pub struct PlayerPositionAndLookPacket {
 pub struct PlayerDiggingPacket {
     pub status: i8,
     // pub location: Position,
-    face: i8
+    pub face: i8
 }
