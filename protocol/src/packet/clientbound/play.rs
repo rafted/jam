@@ -17,18 +17,20 @@ pub struct KeepAlivePacket {
 }
 
 /// Sends the state of the world the player is joining on on, to the player.
+///
+/// # Gamemode Table:
+/// | ID | Gamemode  |
+/// |----|-----------|
+/// | 0  | Survival  |
+/// | 1  | Creative  |
+/// | 2  | Adventure |
+/// | 3  | Spectator |
 #[derive(PacketDef)]
 pub struct JoinGamePacket {
     /// The player's Entity ID (EID)
     pub entity_id: i32,
 
-    /// ID of the gamemode, based on this table:
-    /// | ID | Gamemode  |
-    /// |----|-----------|
-    /// | 0  | Survival  |
-    /// | 1  | Creative  |
-    /// | 2  | Adventure |
-    /// | 3  | Spectator |
+    /// ID of the gamemode.
     ///
     /// Bit 3 (0x8) is the hardcore flag.
     pub gamemode: u16,
@@ -476,7 +478,7 @@ pub struct DestroyEntitiesPacket {
     /// Number of elements in the following array.
     pub count: VarInt,
 
-    /// The list of entities of destroy.
+    // /// The list of entities of destroy.
     // pub entities_id: Vec<VarInt>,
 }
 
@@ -593,38 +595,40 @@ pub struct EntityHeadLookPacket {
 }
 
 /// Updates an Entity's status.
+///
+/// # Entity Status Table
+/// | Entity Status | Meaning
+/// |---------------|--------------------------------------------------------------------------|
+/// | 1             | Sent when resetting a mob spawn minecart's timer / Rabbit jump animation |
+/// | 2             | Living Entity hurt                                                       |
+/// | 3             | Living Entity dead                                                       |
+/// | 4             | Iron Golem throwing up arms                                              |
+/// | 6             | Wolf/Ocelot/Horse taming — Spawn “heart” particles                       |
+/// | 7             | Wolf/Ocelot/Horse tamed — Spawn “smoke” particles                        |
+/// | 8             | Wolf shaking water — Trigger the shaking animation                       |
+/// | 9             | (of self) Eating accepted by server                                      |
+/// | 10            | Sheep eating grass                                                       |
+/// | 10            | Play TNT ignite sound                                                    |
+/// | 11            | Iron Golem handing over a rose                                           |
+/// | 12            | Villager mating — Spawn “heart” particles                                |
+/// | 13            | Spawn particles indicating that a villager is angry and seeking revenge  |
+/// | 14            | Spawn happy particles near a villager                                    |
+/// | 15            | Witch animation — Spawn “magic” particles                                |
+/// | 16            | Play zombie converting into a villager sound                             |
+/// | 17            | Firework exploding                                                       |
+/// | 18            | Animal in love (ready to mate) — Spawn “heart” particles                 |
+/// | 19            | Reset squid rotation                                                     |
+/// | 20            | Spawn explosion particle — works for some living entities                |
+/// | 21            | Play guardian sound — works for only for guardians                       |
+/// | 22            | Enables reduced debug for players                                        |
+/// | 23            | Disables reduced debug for players
+
 #[derive(PacketDef)]
 pub struct EntityStatusPacket {
     /// The EID of the Entity.
     pub entity_id: i32,
 
-    /// The status value, based on the following table:
-    ///
-    /// | Entity Status | Meaning
-    /// |---------------|--------------------------------------------------------------------------|
-    /// | 1             | Sent when resetting a mob spawn minecart's timer / Rabbit jump animation |
-    /// | 2             | Living Entity hurt                                                       |
-    /// | 3             | Living Entity dead                                                       |
-    /// | 4             | Iron Golem throwing up arms                                              |
-    /// | 6             | Wolf/Ocelot/Horse taming — Spawn “heart” particles                       |
-    /// | 7             | Wolf/Ocelot/Horse tamed — Spawn “smoke” particles                        |
-    /// | 8             | Wolf shaking water — Trigger the shaking animation                       |
-    /// | 9             | (of self) Eating accepted by server                                      |
-    /// | 10            | Sheep eating grass                                                       |
-    /// | 10            | Play TNT ignite sound                                                    |
-    /// | 11            | Iron Golem handing over a rose                                           |
-    /// | 12            | Villager mating — Spawn “heart” particles                                |
-    /// | 13            | Spawn particles indicating that a villager is angry and seeking revenge  |
-    /// | 14            | Spawn happy particles near a villager                                    |
-    /// | 15            | Witch animation — Spawn “magic” particles                                |
-    /// | 16            | Play zombie converting into a villager sound                             |
-    /// | 17            | Firework exploding                                                       |
-    /// | 18            | Animal in love (ready to mate) — Spawn “heart” particles                 |
-    /// | 19            | Reset squid rotation                                                     |
-    /// | 20            | Spawn explosion particle — works for some living entities                |
-    /// | 21            | Play guardian sound — works for only for guardians                       |
-    /// | 22            | Enables reduced debug for players                                        |
-    /// | 23            | Disables reduced debug for players
+    /// The status value.
     pub status: i8,
 }
 
@@ -693,298 +697,678 @@ pub struct SetExperiencePacket {
     pub total_exp: VarInt,
 }
 
+/// Sets attributes on the given entity.
+///
+/// # Property Table
+/// | Key 	                        Default 	        Min 	    Max 	            Label                       |
+/// |---------------------------------------------------------------------------------------------------------------|
+/// | generic.maxHealth 	        20.0 	            0.0 	    Double.MaxValue 	Max Health                  |
+/// | generic.followRange 	        32.0 	            0.0 	    2048.0 	            Follow Range                |
+/// | generic.knockbackResistance 	0.0 	            0.0 	    1.0 	            Knockback Resistance        |
+/// | generic.movementSpeed 	    0.699999988079071 	0.0 	    Double.MaxValue 	Movement Speed              |
+/// | generic.attackDamage 	        2.0 	            0.0 	    Double.MaxValue 	                            |
+/// | horse.jumpStrength 	        0.7 	            0.0 	    2.0 	            Jump Strength               |
+/// | zombie.spawnReinforcements 	0.0 	            0.0 	    1.0 	            Spawn Reinforcements Chance |
 #[derive(PacketDef)]
 pub struct EntityPropertiesPacket {
+    /// EID of the Entity.
     pub entity_id: VarInt,
+
+    /// Number of elements in the following array.
     pub properties_amount: i32,
     // TODO: ??
 }
 
+/// Chunks are not unloaded by the client automatically. To unload chunks, send this packet with
+/// Ground-Up Continuous=true and no 16^3 chunks (eg. Primary Bit Mask=0). The server does not send
+/// skylight information for nether-chunks, it's up to the client to know if the player is
+/// currently in the nether. You can also infer this information from the primary bitmask and the
+/// amount of uncompressed bytes sent.
 #[derive(PacketDef)]
 pub struct ChunkDataPacket {
+    /// Chunk X coordinate.
     pub chunk_x: i32,
+
+    /// Chunk Z coordinate.
     pub chunk_z: i32,
+
+    ///// This is true if the packet represents all sections in this vertical column, where the
+    ///// Primary Bit Mask specifies exactly which sections are included, and which are air
     // pub ground_up_continuous: bool,
+
+    /// Bitmask with 1 for every 16x16x16 section whose data follows in the compressed data.
     pub primary_bit_mask: u16,
+
+    /// Size of Data.
     pub size: VarInt,
+
     // pub data: Chunk
 }
 
+/// Fired whenever 2 or more blocks are changed within the render distance.
 #[derive(PacketDef)]
 pub struct MultiBlockChangePacket {
+    /// Chunk X coordinate.
     pub chunk_x: i32,
+
+    /// Chunk Z coordinate.
     pub chunk_z: i32,
+
+    /// Number of elements in the following array, i.e. the number of blocks affected.
     pub record_count: VarInt,
+
     // TODO: ??
 }
 
+/// Fired whenever a block is changed within the render distance.
 #[derive(PacketDef)]
 pub struct BlockChangePacket {
+    /// Block Coordinates.
     pub location: Position,
+
+    /// The new block state ID for the block as given in the global palette (When reading data:
+    /// `type = id >> 4`, `meta = id & 15`, when writing data: `id = type << 4 | (meta & 15))`
     pub block_id: VarInt,
 }
 
+/// This packet is used for a number of things:
+///
+/// - Chests opening and closing
+/// - Pistons pushing and pulling
+/// - Note blocks playing
+/// - Updating beacons
 #[derive(PacketDef)]
 pub struct BlockActionPacket {
+    /// Block coordinates.
     pub location: Position,
+
+    /// Varies depending on block — see Block Actions.
     pub byte_1: u8,
+
+    /// Varies depending on block — see Block Actions.
     pub byte_2: u8,
+
+    /// The block type ID for the block, not including metadata/damage value.
     pub block_type: VarInt,
 }
 
+/// 0–9 are the displayable destroy stages and each other number means that there is no animation
+/// on this coordinate.
+///
+/// You can also set an animation to air! The animation will still be visible.
+///
+/// If you need to display several break animations at the same time you have to give each of them
+/// a unique Entity ID.
+///
+/// Also if you set the coordinates to a special block like water etc. it won't show the actual
+/// break animation but some other interesting effects. For example, water will lose its
+/// transparency.
 #[derive(PacketDef)]
 pub struct BlockBreakAnimationPacket {
+    /// EID for the animation.
     pub entity_id: VarInt,
+
+    /// Block position.
     pub location: Position,
+
+    /// 0–9 to set it, any other value to remove it.
     pub destroy_stage: i8,
 }
 
+/// 1.8 changes at Chunk Data
+///
+/// To reduce the number of bytes, this packet is used to send chunks together for better
+/// compression results.
 #[derive(PacketDef)]
 pub struct MapChunkBulkPacket {
+    // /// Whether or not Chunk Data contains light nibble arrays. This is true in the Overworld,
+    // /// false in the End + Nether.
     // pub sky_light_sent: bool,
     pub column_count: VarInt,
     // TODO: ??
 
+    // /// Each chunk in this array corresponds to the data at the same position in Chunk Meta.
     // pub chunk_data: Vec<Chunk>
 }
 
+/// Sent when an explosion occurs (creepers, TNT, and ghast fireballs).
+///
+/// Each block in Records is set to air. Coordinates for each axis in record is int(X) + record.x
 #[derive(PacketDef)]
 pub struct ExplosionPacket {
+    /// Explosion location on the X Axis.
     pub x: f32,
+
+    /// Explosion location on the Y Axis.
     pub y: f32,
+
+    /// Explosion location on the Z Axis.
     pub z: f32,
+
+    /// Currently unused in the client.
     pub radius: f32,
+
+    /// Number of elements in the following array.
     pub record_count: i32,
+
+    /// Each record is 3 signed bytes long, each bytes are the XYZ (respectively) offsets of
+    /// affected blocks.
     // pub records: Vec<(i8, i8, i8)>,
+    
+    /// X velocity of the player being pushed by the explosion
     pub player_motion_x: f32,
+
+    /// Y velocity of the player being pushed by the explosion
     pub player_motion_y: f32,
+
+    /// Z velocity of the player being pushed by the explosion
     pub player_motion_z: f32,
 }
 
+/// Sent when a client is to play a sound or particle effect.
+///
+/// By default, the Minecraft client adjusts the volume of sound effects based on distance. The
+/// final boolean field is used to disable this, and instead the effect is played from 2 blocks
+/// away in the correct direction. Currently this is only used for effect 1013 (mob.wither.spawn),
+/// and is ignored for any other value by the client.
 #[derive(PacketDef)]
 pub struct EffectPacket {
+    /// The ID of the effect.
     pub effect_id: i32,
+
+    /// The location of the effect.
     pub location: Position,
+
+    /// Extra data for certain effects, see below.
     pub data: i32,
+
     // pub disable_relative_volume: bool,
 }
 
+/// Used to play a sound effect on the client.
+///
+/// Custom sounds may be added by resource packs.
 #[derive(PacketDef)]
 pub struct SoundEffectPacket {
+    /// All known sound effect names can be seen here:
+    /// https://github.com/SirCmpwn/Craft.Net/blob/master/source/Craft.Net.Common/SoundEffect.cs
     pub sound_name: String,
+
+    /// Effect X multiplied by 8.
     pub effect_position_x: i32,
+
+    /// Effect Y multiplied by 8.
     pub effect_position_y: i32,
+
+    /// Effect Z multiplied by 8.
     pub effect_position_z: i32,
+
+    /// 1 is 100%, can be more.
     pub volume: f32,
+
+    /// 63 is 100%, can be more.
     pub pitch: u8,
 }
 
+/// Displays the named particle.
 #[derive(PacketDef)]
 pub struct ParticlePacket {
+    /// The ID of the Particle.
     pub particle_id: i32,
+
+    // /// If true, particle distance increases from 256 to 65536.
     // pub long_distance: bool,
+    
+    /// X position of the particle.
     pub x: f32,
+
+    /// Y position of the particle.
     pub y: f32,
+
+    /// Z position of the particle.
     pub z: f32,
+
+    /// This is added to the X position after being multiplied by random.nextGaussian()
     pub offset_x: f32,
+
+    /// This is added to the Y position after being multiplied by random.nextGaussian()
     pub offset_y: f32,
+
+    /// This is added to the Z position after being multiplied by random.nextGaussian()
     pub offset_z: f32,
+
+    /// The data of each particle.
     pub particle_data: f32,
+
+    /// The number of particles to create.
     pub particle_count: i32,
+
+    // /// Length depends on particle. "iconcrack" has length of 2, "blockcrack", and "blockdust" have
+    // /// lengths of 1, the rest have 0.
     // pub data: Vec<VarInt>,
 }
 
+/// It appears when a bed can't be used as a spawn point and when the rain state changes.
+///
+/// # Reason codes Table
+/// |--------------------------------------------|--------------------------------------------------------------------------------------------------------------------------|
+/// | 0 | Invalid Bed                            |                                                                                                                          |
+/// | 1 | End raining                            |                                                                                                                          |
+/// | 2 | Begin raining                          |                                                                                                                          |
+/// | 3 | Change game mode                       | 0: Survival, 1: Creative, 2: Adventure, 3: Spectator                                                                     |
+/// | 4 | Enter credits                          |                                                                                                                          |
+/// | 5 | Demo message 	                         | 0: Show welcome to demo screen, 101: Tell movement controls, 102: Tell jump control, 103: Tell inventory control         |
+/// | 6 | Arrow hitting player 	                 | Appears to be played when an arrow strikes another player in Multiplayer                                                 |
+/// | 7 | Fade value                             | The current darkness value. 1 = Dark, 0 = Bright, Setting the value higher causes the game to change color and freeze    |
+/// | 8 | Fade time	                             | Time in ticks for the sky to fade                                                                                        |
+/// | 10| Play mob appearance (effect and sound) | Unknown                                                                                                                  |
 #[derive(PacketDef)]
 pub struct ChangeGameStatePacket {
+    /// Reason code.
     pub reason: u8,
+
+    /// Depends on reason.
     pub value: f32,
 }
 
+/// With this packet, the server notifies the client of thunderbolts striking within a 512 block
+/// radius around the player. The coordinates specify where exactly the thunderbolt strikes.
 #[derive(PacketDef)]
 pub struct SpawnGlobalEntityPacket {
+    /// The EID of the thunderbolt.
     pub entity_id: VarInt,
+
+    /// The global entity type, currently always 1 for thunderbolt.
     pub type_: i8,
+
+    /// Thunderbolt X, a fixed-point number.
     pub x: i32,
+
+    /// Thunderbolt Y, a fixed-point number.
     pub y: i32,
+
+    /// Thunderbolt Z, a fixed-point number.
     pub z: i32,
 }
 
+// /// This is sent to the client when it should open an inventory, such as a chest, workbench, or
+// /// furnace. This message is not sent anywhere for clients opening their own inventory.
 // #[derive(PacketDef)]
 // pub struct OpenWindowPacket<'a> {
+//     /// A unique id number for the window to be displayed. Notchian server implementation is a
+//     /// counter, starting at 1.
 //     pub id: u8,
+//
+//     /// The window type to use for display. See Inventory for a list.
 //     pub type_: String,
+//
+//     /// The title of the window.
 //     pub title: ChatComponent<'a>,
+//
+//     /// Number of slots in the window (excluding the number of slots in the player inventory).
 //     pub slots: u8,
+//
+//     /// EntityHorse's EID. Only sent when Window Type is “EntityHorse".
 //     pub entity_id: Option<i32>,
 // }
 
+/// This packet is sent from the server to the client when a window is forcibly closed, such as
+/// when a chest is destroyed while it's open.
+///
+/// Note, notchian clients send a close window packet with Window ID 0 to close their inventory
+/// even though there is never an Open Window packet for inventory.
 #[derive(PacketDef)]
 pub struct CloseWindowPacket {
+    /// This is the ID of the window that was closed. 0 for inventory.
     pub id: u8,
 }
 
+/// Sent by the server when an item in a slot (in a window) is added/removed.
 #[derive(PacketDef)]
 pub struct SetSlotPacket {
+    /// The window which is being updated. 0 for player inventory. Note that all known window types
+    /// include the player inventory. This packet will only be sent for the currently opened window
+    /// while the player is performing actions, even if it affects the player inventory. After the
+    /// window is closed, a number of these packets are sent to update the player's inventory
+    /// window (0).
     pub id: i8,
+
+    /// The slot that should be updated.
     pub slot: i16,
+
     // pub data: Slot
 }
 
+/// Sent by the server when items in multiple slots (in a window) are added/removed. This includes
+/// the main inventory, equipped armour and crafting slots.
 #[derive(PacketDef)]
 pub struct WindowItemsPacket {
+    /// The ID of window which items are being sent for. 0 for player inventory.
     pub id: u8,
+
+    /// Number of elements in the following array.
     pub count: i16,
+
     // pub data: Vec<Slot>
 }
 
+/// This packet is used to inform the client that part of a GUI window should be updated.
+///
+/// TODO: add table
 #[derive(PacketDef)]
 pub struct WindowPropertyPacket {
+    /// The ID of a window.
     pub id: u8,
+
+    /// The property to be updated, see below.
     pub property: i16,
+
+    /// The new value for the property, see below.
     pub value: i16,
 }
 
+/// A packet from the server indicating whether a request from the client was accepted, or whether
+/// there was a conflict (due to lag).
 #[derive(PacketDef)]
 pub struct ConfirmTransactionPacket {
+    /// The ID of the window that the action occurred in.
     pub id: i8,
+
+    /// Every action that is to be accepted has a unique number. This field corresponds to that number.
     pub action_number: i16,
+
+    // /// Whether the action was accepted.
     // pub accepted: bool,
 }
 
+/// This message is sent from the server to the client whenever a sign is discovered or created.
+/// This message is NOT sent when a sign is destroyed or unloaded.
 // #[derive(PacketDef)]
 // pub struct UpdateSignPacket<'a> {
+//     /// Location of the sign.
 //     pub location: Position,
+//
+//     /// First line of text in the sign.
 //     pub line1: ChatComponent<'a>,
+//
+//     /// Second line of text in the sign.
 //     pub line2: ChatComponent<'a>,
+//
+//     /// Third line of text in the sign.
 //     pub line3: ChatComponent<'a>,
+//
+//     /// Fourth line of text in the sign.
 //     pub line4: ChatComponent<'a>,
 // }
 
+/// Updates a rectangular area on a map.
 #[derive(PacketDef)]
 pub struct MapPacket {
+    /// The damage value (map ID) of the map being modified.
     pub item_damage: VarInt,
+
     pub scale: i8,
+
+    /// Number of elements in the following array.
     pub icon_amount: VarInt,
 
     // TODO: ??
+    
+    /// Number of columns updated.
     pub column: i8,
+
+    // /// Only if Columns is more than 0; number of rows updated.
     // pub rows: Option<i8>,
+    
+    // /// Only if Columns is more than 0; x offset of the westernmost column.
     // pub x: Option<i8>,
+    
+    // /// Only if Columns is more than 0; z offset of the northernmost row.
     // pub z: Option<i8>,
+   
+    // /// Only if Columns is more than 0; length of the following array.
     // pub length: Option<VarInt>,
+    
+    // /// Only if Columns is more than 0; see Map item format.
     // pub data: Option<Vec<u8>>,
 }
 
+/// Essentially a block update on a block entity.
+///
+/// # Action Table                                                          |
+/// | Action | Description                                                  |
+/// |--------|--------------------------------------------------------------|
+/// |    1   | Set SpawnPotentials of a mob spawner                         |
+/// |    2   | Set command block text (command and last execution status)   |
+/// |    3   | Set the level, primary, and secondary powers of a beacon     |
+/// |    4   | Set rotation and skin of mob head                            |
+/// |    5   | Set type of flower in flower pot                             |
+/// |    6   | Set base color and patterns on a banner                      |
 #[derive(PacketDef)]
 pub struct UpdateBlockEntityPacket {
+    /// TODO: think what to write here
     pub location: Position,
+
+    /// The type of update to perform, see below.
     pub action: u8,
+
+    // /// If not present then it's a TAG_END (0)
     // pub data: NBTTag
 }
 
+/// Sent when the client has placed a sign and is allowed to send Update Sign.
 #[derive(PacketDef)]
 pub struct OpenSignEditorPacket {
+    /// TODO: think what to write here
     pub location: Position,
 }
 
 #[derive(PacketDef)]
 pub struct StatisticsPacket {
+    /// Number of elements in the following array.
     pub count: VarInt,
+
     // TODO: ??
 }
 
+/// Sent by the notchian server to update the user list (<tab> in the client.)
 #[derive(PacketDef)]
 pub struct PlayerListItemPacket {
+    /// Determines the rest of the Player format after the UUID.
     pub action: VarInt,
+
+    /// Number of elements in the following array.
     pub players_amount: VarInt,
+
     // TODO: ??
 }
 
+/// The latter 2 floats are used to indicate the field of view and flying speed respectively, while
+/// the first byte is used to determine the value of 4 booleans.
+///
+/// # Flags
+/// TODO
 #[derive(PacketDef)]
 pub struct PlayerAbilitiesPacket {
+    /// Bit field.
     pub flags: i8,
+
     pub flying_speed: f32,
+
+    /// Modifies the field of view, like a speed potion. A Notchian server will use the same value
+    /// as the movement speed (send in the Entity Properties packet.)
     pub fov_modifier: f32,
 }
 
+/// The server responds with a list of auto-completions of the last word sent to it. In the case of
+/// regular chat, this is a player username. Command names and parameters are also supported.
 #[derive(PacketDef)]
 pub struct TabCompletePacket {
+    /// Number of elements in the following array.
     pub flags: VarInt,
+
+    // /// One eligible command, note that each command is sent separately instead of in a single
+    // /// string, hence the need for Count
     // pub matches: Vec<String>,
 }
 
+/// This is sent to the client when it should create a new scoreboard objective or remove one.
 #[derive(PacketDef)]
 pub struct ScoreboardObjectivePacket {
+    /// An unique name for the objective.
     pub name: String,
+
+    /// 0 to create the scoreboard. 1 to remove the scoreboard. 2 to update the display text.
     pub mode: i8,
+
+    // /// Only if mode is 0 or 2. The text to be displayed for the score.
     // pub value: Option<String>,
+    
+    // /// Only if mode is 0 or 2. “integer” or “hearts”
     // pub type_: Option<String>,
 }
 
+/// This is sent to the client when it should update a scoreboard item.
 #[derive(PacketDef)]
 pub struct UpdateScorePacket {
+    /// The name of the score to be updated or removed.
     pub name: String,
+
+    /// 0 to create/update an item. 1 to remove an item.
     pub action: i8,
+
+    /// The name of the objective the score belongs to.
     pub objective_name: String,
+
+    // /// The score to be displayed next to the entry. Only sent when Action does not equal 1.
     // pub value: Option<VarInt>,
 }
 
+/// This is sent to the client when it should display a scoreboard.
 #[derive(PacketDef)]
 pub struct DisplayScoreboardPacket {
+    /// The position of the scoreboard. 0: list, 1: sidebar, 2: below name.
     pub position: i8,
+
+    /// The unique name for the scoreboard to be displayed.
     pub name: String,
 }
 
+/// Creates and updates teams.
 #[derive(PacketDef)]
 pub struct TeamPacket {
+    /// A unique name for the team. (Shared with scoreboard).
     pub name: String,
+
+    /// If 0 then the team is created.
+    /// If 1 then the team is removed.
+    /// If 2 the team team information is updated.
+    /// If 3 then new players are added to the team.
+    /// If 4 then players are removed from the team.
     pub mode: i8,
+
+    // /// Only if Mode = 0 or 2.
     // pub display_name: Option<String>,
+
+    // /// Only if Mode = 0 or 2. Displayed before the players' name that are part of this team.
     // pub prefix: Option<String>,
+
+    // /// Only if Mode = 0 or 2. Displayed after the players' name that are part of this team.
     // pub suffix: Option<String>,
+
+    // /// Only if Mode = 0 or 2. 0 for off, 1 for on, 3 for seeing friendly invisibles.
     // pub friendly_fire: Option<i8>,
+
+    // /// Only if Mode = 0 or 2. always, hideForOtherTeams, hideForOwnTeam, never.
     // pub name_tag_visibility: Option<String>,
+
+    // /// Only if Mode = 0 or 2. Same as Chat colors.
     // pub color: Option<i8>,
+
+    // /// Only if Mode = 0 or 3 or 4. Number of players in the array.
     // pub players_amount: Option<VarInt>,
+
+    // /// Only if Mode = 0 or 3 or 4. Players to be added/remove from the team. Max 40 characters so
+    // /// may be uuid's later.
     // pub players: Option<String>,
 }
 
+/// Mods and plugins can use this to send their data. Minecraft itself uses a number of plugin
+/// channels. These internal channels are prefixed with MC|.
+///
+/// More documentation on this:
+/// http://dinnerbone.com/blog/2012/01/13/minecraft-plugin-channels-messaging/
 #[derive(PacketDef)]
 pub struct PluginMessagePacket {
+    /// Name of the plugin channel used to send the data.
     pub channel: String,
+
+    // /// Any data, depending on the channel. MC| channels are documented here.
     // pub data: Vec<i8>,
 }
 
+// /// Sent by the server before it disconnects a client. The client assumes that the server has already closed the connection by the time the packet arrives.
 // #[derive(PacketDef)]
 // pub struct DisconnectPacket<'a> {
+//     /// Displayed to the client when the connection terminates.
 //     pub reason: ChatComponent<'a>,
 // }
 
+/// Changes the difficulty setting in the client's option menu.
 #[derive(PacketDef)]
 pub struct ServerDifficultyPacket {
+    /// 0: peaceful, 1: easy, 2: normal, 3: hard.
     pub difficulty: u8,
 }
 
 #[derive(PacketDef)]
 pub struct CombatEventPacket {
+    /// 0: enter combat, 1: end combat, 2: entity dead.
     pub event: VarInt,
+
+    // /// Only for end combat.
     // pub duration: Option<VarInt>,
+
+    // /// Only for entity dead.
     // pub player_id: Option<VarInt>,
+
+    // /// Only for end combat and entity dead.
     // pub entity_id: Option<i32>,
+
+    /// Only for entity dead.
     pub message: String,
 }
 
+/// Sets the entity that the player renders from. This is normally used when the left-clicks an
+/// entity while in spectator mode.
+/// 
+/// The player's camera will move with the entity and look where it is looking. The entity is often
+/// another player, but can be any type of entity. The player is unable to move this entity (move
+/// packets will act as if they are coming from the other entity).
+/// 
+/// If the given entity is not loaded by the player, this packet is ignored. To return control to
+/// the player, send this packet with their entity ID.
+/// 
+/// The Notchian server resets this (sends it back to the default entity) whenever the spectated
+/// entity is killed or the player sneaks, but only if they were spectating an entity. It also
+/// sends this packet whenever the player switches out of spectator mode (even if they weren't
+/// spectating an entity).
 #[derive(PacketDef)]
 pub struct CameraPacket {
+    /// ID of the entity to set the client's camera to.
     pub id: VarInt,
 }
 
+/// TODO
 #[derive(PacketDef)]
 pub struct WorldBorderPacket {
+    /// Determines the format of the rest of the packet
     pub action: VarInt,
     // TODO: ??
 }
 
+/// Warning: This packet is completely broken and has been removed in the 1.9 snapshots. The
+/// packet Set Compression (Login, 0x03, clientbound) should be used instead.
 #[derive(PacketDef)]
 pub struct SetCompressionPacket {
     pub threshold: VarInt,
@@ -998,7 +1382,14 @@ pub struct SetCompressionPacket {
 
 #[derive(PacketDef)]
 pub struct ResourcePackSendPacket {
+    /// The URL to the resource pack.
     pub url: String,
+
+    /// A 40 character hexadecimal and lowercase SHA-1 hash of the resource pack file. (must be
+    /// lower case in order to work)
+    ///
+    /// If it's not a 40 character hexadecimal string, the client will not use it for hash
+    /// verification and likely waste bandwidth — but it will still treat it as a unique id
     pub hash: String,
 }
 
