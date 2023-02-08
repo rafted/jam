@@ -51,7 +51,6 @@ pub struct JoinGamePacket {
 
     /// default, flat, largeBiomes, amplified, default_1_1
     pub level_type: String,
-
     // /// If true, a Notchian client shows reduced information on the debug screen.
     // pub reduced_debug_info: bool,
 }
@@ -100,7 +99,6 @@ pub struct EntityEquipmentPacket {
     ///                  3: chestplate,
     ///                  4: helmet.)
     pub slot: i16,
-
     // /// Item in slot format.
     // pub item: Slot,
 }
@@ -211,7 +209,6 @@ pub struct PlayerPositionAndLookPacket {
 
     /// Absolute or relative rotation on the Y Axis, in degrees.
     pub pitch: f32,
-
     // /// Bit field.
     // ///
     // /// ```
@@ -292,7 +289,6 @@ pub struct SpawnPlayerPacket {
 
     // /// The UUID of the player.
     // pub uuid: UUID,
-    
     /// Player X as a Fixed-Point number.
     pub x: i32,
 
@@ -304,14 +300,12 @@ pub struct SpawnPlayerPacket {
 
     // /// Player rotation on the X Axis.
     // pub yaw: Angle,
-    
+
     // /// Player rotation on the Y Axis.
     // pub pitch: Angle,
-    
     /// The item the player is currently holding. Note that this should be 0 for “no item”, unlike
     /// -1 used in other packets.
     pub current_item: i16,
-
     // /// The entity metadata.
     // pub metadata: Metadata
 }
@@ -349,19 +343,17 @@ pub struct SpawnObjectPacket {
 
     // /// Player rotation on the Y Axis.
     // pub pitch: Angle,
-   
+
     // /// Player rotation on the X Axis.
     // pub yaw: Angle,
-
     /// Meaning dependent on the value of the Type field, see Object Data for details.
     pub data: i32,
-
     // /// Velocity on the X axis. Only sent if the Data field is nonzero.
     // pub velocity_x: Option<i16>,
-    
+
     // /// Velocity on the Y axis. Only sent if the Data field is nonzero.
     // pub velocity_y: Option<i16>,
-   
+
     // /// Velocity on the Z axis. Only sent if the Data field is nonzero.
     // pub velocity_z: Option<i16>,
 }
@@ -389,10 +381,9 @@ pub struct SpawnMobPacket {
 
     // /// Player rotation on the Y Axis.
     // pub pitch: Angle,
-    
+
     // /// Head rotation on the Y Axis.
     // pub head_pitch: Angle,
-
     /// Velocity on the X Axis.
     pub velocity_x: i16,
 
@@ -401,13 +392,12 @@ pub struct SpawnMobPacket {
 
     /// Velocity on the Z Axis.
     pub velocity_z: i16,
-
     // /// Entity metadata.
     // pub metadata: Metadata,
 }
 
 /// This packet shows location, name, and type of painting.
-/// 
+///
 /// Calculating the center of an image: given a (width x height) grid of cells, with (0, 0) being
 /// the top left corner, the center is (max(0, width / 2 - 1), height / 2). E.g.
 /// ```
@@ -426,9 +416,9 @@ pub struct SpawnPaintingPacket {
     pub location: Position,
 
     /// ID of the Direction the painting faces.
-    /// 
+    ///
     /// | ID | Direction  |
-    /// |----|------------| 
+    /// |----|------------|
     /// | 0  | North (-z) |
     /// | 1  | West (-x)  |
     /// | 2  | South (+z) |
@@ -461,7 +451,7 @@ pub struct SpawnExperienceOrbPacket {
 pub struct EntityVelocityPacket {
     /// EID of the entity.
     pub entity_id: VarInt,
-    
+
     /// Velocity on the X axis.
     pub velocity_x: i16,
 
@@ -477,7 +467,6 @@ pub struct EntityVelocityPacket {
 pub struct DestroyEntitiesPacket {
     /// Number of elements in the following array.
     pub count: VarInt,
-
     // /// The list of entities of destroy.
     // pub entities_id: Vec<VarInt>,
 }
@@ -511,7 +500,6 @@ pub struct EntityRelativeMovePacket {
 
     /// Change in Z position as a Fixed-Point number
     pub delta_z: i8,
-
     // /// Whether the player is touching the ground or not.
     // pub on_ground: bool,
 }
@@ -521,13 +509,12 @@ pub struct EntityRelativeMovePacket {
 pub struct EntityLookPacket {
     /// The EID of the Entity.
     pub entity_id: VarInt,
-
     // /// New angle, not a delta.
     // pub yaw: Angle,
 
     // /// New angle, not a delta.
     // pub pitch: Angle,
-    
+
     // /// Whether the player is touching the ground or not.
     // pub on_ground: bool,
 }
@@ -548,7 +535,6 @@ pub struct EntityLookAndRelativeMovePacket {
 
     /// Change in Z position as a Fixed-Point number.
     pub delta_z: i8,
-
     // /// New angle, not a delta.
     // pub yaw: Angle,
 
@@ -573,7 +559,6 @@ pub struct EntityTeleportPacket {
 
     /// Player Z as a Fixed-Point number.
     pub z: i8,
-
     // /// New angle, not a delta
     // pub yaw: Angle,
 
@@ -640,7 +625,6 @@ pub struct AttachEntityPacket {
 
     /// EID of the Vehicle. Set to -1 to detach.
     pub vehicle_id: i32,
-
     // /// If true leashes the entity to the vehicle.
     // pub leash: bool,
 }
@@ -651,7 +635,6 @@ pub struct AttachEntityPacket {
 pub struct EntityMetadataPacket {
     /// EID of the Entity.
     pub entity_id: VarInt,
-
     // /// Metadata of Entity.
     // pub metadata: Metadata
 }
@@ -669,7 +652,6 @@ pub struct EntityEffectPacket {
 
     /// Duration in seconds.
     pub duration: VarInt,
-
     // /// Whether particles should be hidden or not.
     // pub hide_particles: bool,
 }
@@ -735,13 +717,11 @@ pub struct ChunkDataPacket {
     ///// This is true if the packet represents all sections in this vertical column, where the
     ///// Primary Bit Mask specifies exactly which sections are included, and which are air
     // pub ground_up_continuous: bool,
-
     /// Bitmask with 1 for every 16x16x16 section whose data follows in the compressed data.
     pub primary_bit_mask: u16,
 
     /// Size of Data.
     pub size: VarInt,
-
     // pub data: Chunk
 }
 
@@ -756,7 +736,6 @@ pub struct MultiBlockChangePacket {
 
     /// Number of elements in the following array, i.e. the number of blocks affected.
     pub record_count: VarInt,
-
     // TODO: ??
 }
 
@@ -854,7 +833,7 @@ pub struct ExplosionPacket {
     /// Each record is 3 signed bytes long, each bytes are the XYZ (respectively) offsets of
     /// affected blocks.
     // pub records: Vec<(i8, i8, i8)>,
-    
+
     /// X velocity of the player being pushed by the explosion
     pub player_motion_x: f32,
 
@@ -881,7 +860,6 @@ pub struct EffectPacket {
 
     /// Extra data for certain effects, see below.
     pub data: i32,
-
     // pub disable_relative_volume: bool,
 }
 
@@ -918,7 +896,6 @@ pub struct ParticlePacket {
 
     // /// If true, particle distance increases from 256 to 65536.
     // pub long_distance: bool,
-    
     /// X position of the particle.
     pub x: f32,
 
@@ -942,7 +919,6 @@ pub struct ParticlePacket {
 
     /// The number of particles to create.
     pub particle_count: i32,
-
     // /// Length depends on particle. "iconcrack" has length of 2, "blockcrack", and "blockdust" have
     // /// lengths of 1, the rest have 0.
     // pub data: Vec<VarInt>,
@@ -1035,7 +1011,6 @@ pub struct SetSlotPacket {
 
     /// The slot that should be updated.
     pub slot: i16,
-
     // pub data: Slot
 }
 
@@ -1048,7 +1023,6 @@ pub struct WindowItemsPacket {
 
     /// Number of elements in the following array.
     pub count: i16,
-
     // pub data: Vec<Slot>
 }
 
@@ -1076,7 +1050,6 @@ pub struct ConfirmTransactionPacket {
 
     /// Every action that is to be accepted has a unique number. This field corresponds to that number.
     pub action_number: i16,
-
     // /// Whether the action was accepted.
     // pub accepted: bool,
 }
@@ -1113,22 +1086,20 @@ pub struct MapPacket {
     pub icon_amount: VarInt,
 
     // TODO: ??
-    
     /// Number of columns updated.
     pub column: i8,
-
     // /// Only if Columns is more than 0; number of rows updated.
     // pub rows: Option<i8>,
-    
+
     // /// Only if Columns is more than 0; x offset of the westernmost column.
     // pub x: Option<i8>,
-    
+
     // /// Only if Columns is more than 0; z offset of the northernmost row.
     // pub z: Option<i8>,
-   
+
     // /// Only if Columns is more than 0; length of the following array.
     // pub length: Option<VarInt>,
-    
+
     // /// Only if Columns is more than 0; see Map item format.
     // pub data: Option<Vec<u8>>,
 }
@@ -1151,7 +1122,6 @@ pub struct UpdateBlockEntityPacket {
 
     /// The type of update to perform, see below.
     pub action: u8,
-
     // /// If not present then it's a TAG_END (0)
     // pub data: NBTTag
 }
@@ -1167,7 +1137,6 @@ pub struct OpenSignEditorPacket {
 pub struct StatisticsPacket {
     /// Number of elements in the following array.
     pub count: VarInt,
-
     // TODO: ??
 }
 
@@ -1179,7 +1148,6 @@ pub struct PlayerListItemPacket {
 
     /// Number of elements in the following array.
     pub players_amount: VarInt,
-
     // TODO: ??
 }
 
@@ -1206,7 +1174,6 @@ pub struct PlayerAbilitiesPacket {
 pub struct TabCompletePacket {
     /// Number of elements in the following array.
     pub flags: VarInt,
-
     // /// One eligible command, note that each command is sent separately instead of in a single
     // /// string, hence the need for Count
     // pub matches: Vec<String>,
@@ -1220,10 +1187,9 @@ pub struct ScoreboardObjectivePacket {
 
     /// 0 to create the scoreboard. 1 to remove the scoreboard. 2 to update the display text.
     pub mode: i8,
-
     // /// Only if mode is 0 or 2. The text to be displayed for the score.
     // pub value: Option<String>,
-    
+
     // /// Only if mode is 0 or 2. “integer” or “hearts”
     // pub type_: Option<String>,
 }
@@ -1239,7 +1205,6 @@ pub struct UpdateScorePacket {
 
     /// The name of the objective the score belongs to.
     pub objective_name: String,
-
     // /// The score to be displayed next to the entry. Only sent when Action does not equal 1.
     // pub value: Option<VarInt>,
 }
@@ -1266,7 +1231,6 @@ pub struct TeamPacket {
     /// If 3 then new players are added to the team.
     /// If 4 then players are removed from the team.
     pub mode: i8,
-
     // /// Only if Mode = 0 or 2.
     // pub display_name: Option<String>,
 
@@ -1302,7 +1266,6 @@ pub struct TeamPacket {
 pub struct PluginMessagePacket {
     /// Name of the plugin channel used to send the data.
     pub channel: String,
-
     // /// Any data, depending on the channel. MC| channels are documented here.
     // pub data: Vec<i8>,
 }
@@ -1334,21 +1297,20 @@ pub struct CombatEventPacket {
 
     // /// Only for end combat and entity dead.
     // pub entity_id: Option<i32>,
-
     /// Only for entity dead.
     pub message: String,
 }
 
 /// Sets the entity that the player renders from. This is normally used when the left-clicks an
 /// entity while in spectator mode.
-/// 
+///
 /// The player's camera will move with the entity and look where it is looking. The entity is often
 /// another player, but can be any type of entity. The player is unable to move this entity (move
 /// packets will act as if they are coming from the other entity).
-/// 
+///
 /// If the given entity is not loaded by the player, this packet is ignored. To return control to
 /// the player, send this packet with their entity ID.
-/// 
+///
 /// The Notchian server resets this (sends it back to the default entity) whenever the spectated
 /// entity is killed or the player sneaks, but only if they were spectating an entity. It also
 /// sends this packet whenever the player switches out of spectator mode (even if they weren't

@@ -1,6 +1,6 @@
 use protocol_macro::PacketDef;
 
-use crate::{encoding::Encodable, varint::VarInt};
+use crate::{varint::VarInt};
 
 #[derive(PacketDef)]
 pub struct HandshakePacket {
