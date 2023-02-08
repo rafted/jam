@@ -47,7 +47,7 @@ pub struct JoinGamePacket {
     /// default, flat, largeBiomes, amplified, default_1_1
     pub level_type: String,
 
-    /// If true, a Notchian client shows reduced information on the debug screen.
+    // /// If true, a Notchian client shows reduced information on the debug screen.
     // pub reduced_debug_info: bool,
 }
 
@@ -96,7 +96,7 @@ pub struct EntityEquipmentPacket {
     ///                  4: helmet.)
     pub slot: i16,
 
-    /// Item in slot format.
+    // /// Item in slot format.
     // pub item: Slot,
 }
 
@@ -207,18 +207,18 @@ pub struct PlayerPositionAndLookPacket {
     /// Absolute or relative rotation on the Y Axis, in degrees.
     pub pitch: f32,
 
-    /// Bit field.
-    ///
-    /// ```
-    /// <Dinnerbone> It's a bitfield, X/Y/Z/Y_ROT/X_ROT. If X is set, the x value is relative and not absolute.
-    /// ```
-    ///
-    /// Field 	Bit
-    /// X 	    0x01
-    /// Y 	    0x02
-    /// Z 	    0x04
-    /// Y_ROT 	0x08
-    /// X_ROT 	0x10
+    // /// Bit field.
+    // ///
+    // /// ```
+    // /// <Dinnerbone> It's a bitfield, X/Y/Z/Y_ROT/X_ROT. If X is set, the x value is relative and not absolute.
+    // /// ```
+    // ///
+    // /// Field 	Bit
+    // /// X 	    0x01
+    // /// Y 	    0x02
+    // /// Z 	    0x04
+    // /// Y_ROT 	0x08
+    // /// X_ROT 	0x10
     // pub flags: BitField
 }
 
@@ -274,7 +274,7 @@ pub struct AnimationPacket {
 /// is used.
 ///
 /// For NPCs UUID v2 should be used. Note:
-/// ```
+/// ```text
 /// <+Grum> i will never confirm this as a feature you know that :)
 /// ```
 ///
@@ -285,7 +285,7 @@ pub struct SpawnPlayerPacket {
     /// Player's EID.
     pub entity_id: VarInt,
 
-    /// The UUID of the player.
+    // /// The UUID of the player.
     // pub uuid: UUID,
     
     /// Player X as a Fixed-Point number.
@@ -297,17 +297,17 @@ pub struct SpawnPlayerPacket {
     /// Player Z as a Fixed-Point number.
     pub z: i32,
 
-    /// Player rotation on the X Axis.
+    // /// Player rotation on the X Axis.
     // pub yaw: Angle,
     
-    /// Player rotation on the Y Axis.
+    // /// Player rotation on the Y Axis.
     // pub pitch: Angle,
     
     /// The item the player is currently holding. Note that this should be 0 for “no item”, unlike
     /// -1 used in other packets.
     pub current_item: i16,
 
-    /// The entity metadata.
+    // /// The entity metadata.
     // pub metadata: Metadata
 }
 
@@ -342,22 +342,22 @@ pub struct SpawnObjectPacket {
     /// Z position as a Fixed-Point number.
     pub z: i32,
 
-    /// Player rotation on the Y Axis.
+    // /// Player rotation on the Y Axis.
     // pub pitch: Angle,
    
-    /// Player rotation on the X Axis.
+    // /// Player rotation on the X Axis.
     // pub yaw: Angle,
 
     /// Meaning dependent on the value of the Type field, see Object Data for details.
     pub data: i32,
 
-    /// Velocity on the X axis. Only sent if the Data field is nonzero.
+    // /// Velocity on the X axis. Only sent if the Data field is nonzero.
     // pub velocity_x: Option<i16>,
     
-    /// Velocity on the Y axis. Only sent if the Data field is nonzero.
+    // /// Velocity on the Y axis. Only sent if the Data field is nonzero.
     // pub velocity_y: Option<i16>,
    
-    /// Velocity on the Z axis. Only sent if the Data field is nonzero.
+    // /// Velocity on the Z axis. Only sent if the Data field is nonzero.
     // pub velocity_z: Option<i16>,
 }
 
@@ -379,13 +379,13 @@ pub struct SpawnMobPacket {
     /// Z position as a Fixed-Point number
     pub z: i32,
 
-    /// Player rotation on the X Axis.
+    // /// Player rotation on the X Axis.
     // pub yaw: Angle,
 
-    /// Player rotation on the Y Axis.
+    // /// Player rotation on the Y Axis.
     // pub pitch: Angle,
     
-    /// Head rotation on the Y Axis.
+    // /// Head rotation on the Y Axis.
     // pub head_pitch: Angle,
 
     /// Velocity on the X Axis.
@@ -397,7 +397,7 @@ pub struct SpawnMobPacket {
     /// Velocity on the Z Axis.
     pub velocity_z: i16,
 
-    /// Entity metadata.
+    // /// Entity metadata.
     // pub metadata: Metadata,
 }
 
