@@ -46,7 +46,6 @@ pub struct JoinGamePacket {
 
     /// default, flat, largeBiomes, amplified, default_1_1
     pub level_type: String,
-
     // /// If true, a Notchian client shows reduced information on the debug screen.
     // pub reduced_debug_info: bool,
 }
@@ -95,7 +94,6 @@ pub struct EntityEquipmentPacket {
     ///                  3: chestplate,
     ///                  4: helmet.)
     pub slot: i16,
-
     // /// Item in slot format.
     // pub item: Slot,
 }
@@ -206,7 +204,6 @@ pub struct PlayerPositionAndLookPacket {
 
     /// Absolute or relative rotation on the Y Axis, in degrees.
     pub pitch: f32,
-
     // /// Bit field.
     // ///
     // /// ```
@@ -287,7 +284,6 @@ pub struct SpawnPlayerPacket {
 
     // /// The UUID of the player.
     // pub uuid: UUID,
-    
     /// Player X as a Fixed-Point number.
     pub x: i32,
 
@@ -299,14 +295,12 @@ pub struct SpawnPlayerPacket {
 
     // /// Player rotation on the X Axis.
     // pub yaw: Angle,
-    
+
     // /// Player rotation on the Y Axis.
     // pub pitch: Angle,
-    
     /// The item the player is currently holding. Note that this should be 0 for “no item”, unlike
     /// -1 used in other packets.
     pub current_item: i16,
-
     // /// The entity metadata.
     // pub metadata: Metadata
 }
@@ -344,19 +338,17 @@ pub struct SpawnObjectPacket {
 
     // /// Player rotation on the Y Axis.
     // pub pitch: Angle,
-   
+
     // /// Player rotation on the X Axis.
     // pub yaw: Angle,
-
     /// Meaning dependent on the value of the Type field, see Object Data for details.
     pub data: i32,
-
     // /// Velocity on the X axis. Only sent if the Data field is nonzero.
     // pub velocity_x: Option<i16>,
-    
+
     // /// Velocity on the Y axis. Only sent if the Data field is nonzero.
     // pub velocity_y: Option<i16>,
-   
+
     // /// Velocity on the Z axis. Only sent if the Data field is nonzero.
     // pub velocity_z: Option<i16>,
 }
@@ -384,10 +376,9 @@ pub struct SpawnMobPacket {
 
     // /// Player rotation on the Y Axis.
     // pub pitch: Angle,
-    
+
     // /// Head rotation on the Y Axis.
     // pub head_pitch: Angle,
-
     /// Velocity on the X Axis.
     pub velocity_x: i16,
 
@@ -396,13 +387,12 @@ pub struct SpawnMobPacket {
 
     /// Velocity on the Z Axis.
     pub velocity_z: i16,
-
     // /// Entity metadata.
     // pub metadata: Metadata,
 }
 
 /// This packet shows location, name, and type of painting.
-/// 
+///
 /// Calculating the center of an image: given a (width x height) grid of cells, with (0, 0) being
 /// the top left corner, the center is (max(0, width / 2 - 1), height / 2). E.g.
 /// ```
@@ -453,7 +443,7 @@ pub struct SpawnExperienceOrbPacket {
 pub struct EntityVelocityPacket {
     /// EID of the entity.
     pub entity_id: VarInt,
-    
+
     /// Velocity on the X axis.
     pub velocity_x: i16,
 

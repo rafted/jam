@@ -29,6 +29,9 @@ pub fn define_packet(input: TokenStream) -> TokenStream {
 
     let mut segments_combined = String::from("");
 
+    // this is only for lifetimes!
+    let type_params = input.generics;
+
     for (field_name, field_type) in fields {
         if let Type::Path(path) = &field_type {
             let segments = path.path.segments.to_token_stream().to_string();
@@ -62,7 +65,7 @@ pub fn define_packet(input: TokenStream) -> TokenStream {
 
     // Generate the implementation of the encode and decode methods
     let expanded = quote! {
-        impl crate::packet::Packet for #name {
+        impl #type_params crate::packet::Packet for #name #type_params {
             fn decode<T: std::io::Read>(reader: &mut T) -> anyhow::Result<Self> {
                 Ok(Self {
                     #decode_expand
