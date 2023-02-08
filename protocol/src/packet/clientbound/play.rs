@@ -22,10 +22,13 @@ pub struct JoinGamePacket {
     /// The player's Entity ID (EID)
     pub entity_id: i32,
 
-    /// 0: Survival,
-    /// 1: Creative,
-    /// 2: Adventure,
-    /// 3: Spectator.
+    /// ID of the gamemode, based on this table:
+    /// | ID | Gamemode  |
+    /// |----|-----------|
+    /// | 0  | Survival  |
+    /// | 1  | Creative  |
+    /// | 2  | Adventure |
+    /// | 3  | Spectator |
     ///
     /// Bit 3 (0x8) is the hardcore flag.
     pub gamemode: u16,
@@ -46,6 +49,7 @@ pub struct JoinGamePacket {
 
     /// default, flat, largeBiomes, amplified, default_1_1
     pub level_type: String,
+
     // /// If true, a Notchian client shows reduced information on the debug screen.
     // pub reduced_debug_info: bool,
 }
@@ -94,6 +98,7 @@ pub struct EntityEquipmentPacket {
     ///                  3: chestplate,
     ///                  4: helmet.)
     pub slot: i16,
+
     // /// Item in slot format.
     // pub item: Slot,
 }
@@ -204,6 +209,7 @@ pub struct PlayerPositionAndLookPacket {
 
     /// Absolute or relative rotation on the Y Axis, in degrees.
     pub pitch: f32,
+
     // /// Bit field.
     // ///
     // /// ```
@@ -284,6 +290,7 @@ pub struct SpawnPlayerPacket {
 
     // /// The UUID of the player.
     // pub uuid: UUID,
+    
     /// Player X as a Fixed-Point number.
     pub x: i32,
 
@@ -295,12 +302,14 @@ pub struct SpawnPlayerPacket {
 
     // /// Player rotation on the X Axis.
     // pub yaw: Angle,
-
+    
     // /// Player rotation on the Y Axis.
     // pub pitch: Angle,
+    
     /// The item the player is currently holding. Note that this should be 0 for “no item”, unlike
     /// -1 used in other packets.
     pub current_item: i16,
+
     // /// The entity metadata.
     // pub metadata: Metadata
 }
@@ -338,17 +347,19 @@ pub struct SpawnObjectPacket {
 
     // /// Player rotation on the Y Axis.
     // pub pitch: Angle,
-
+   
     // /// Player rotation on the X Axis.
     // pub yaw: Angle,
+
     /// Meaning dependent on the value of the Type field, see Object Data for details.
     pub data: i32,
+
     // /// Velocity on the X axis. Only sent if the Data field is nonzero.
     // pub velocity_x: Option<i16>,
-
+    
     // /// Velocity on the Y axis. Only sent if the Data field is nonzero.
     // pub velocity_y: Option<i16>,
-
+   
     // /// Velocity on the Z axis. Only sent if the Data field is nonzero.
     // pub velocity_z: Option<i16>,
 }
@@ -376,9 +387,10 @@ pub struct SpawnMobPacket {
 
     // /// Player rotation on the Y Axis.
     // pub pitch: Angle,
-
+    
     // /// Head rotation on the Y Axis.
     // pub head_pitch: Angle,
+
     /// Velocity on the X Axis.
     pub velocity_x: i16,
 
@@ -387,12 +399,13 @@ pub struct SpawnMobPacket {
 
     /// Velocity on the Z Axis.
     pub velocity_z: i16,
+
     // /// Entity metadata.
     // pub metadata: Metadata,
 }
 
 /// This packet shows location, name, and type of painting.
-///
+/// 
 /// Calculating the center of an image: given a (width x height) grid of cells, with (0, 0) being
 /// the top left corner, the center is (max(0, width / 2 - 1), height / 2). E.g.
 /// ```
@@ -410,11 +423,14 @@ pub struct SpawnPaintingPacket {
     /// Center coordinates.
     pub location: Position,
 
-    /// Direction the painting faces.
-    /// 0: north (-z),
-    /// 1: west (-x),
-    /// 2: south (+z),
-    /// 3: east (+x).
+    /// ID of the Direction the painting faces.
+    /// 
+    /// | ID | Direction  |
+    /// |----|------------| 
+    /// | 0  | North (-z) |
+    /// | 1  | West (-x)  |
+    /// | 2  | South (+z) |
+    /// | 3  | East (+x)  |
     pub direction: u8,
 }
 
@@ -443,7 +459,7 @@ pub struct SpawnExperienceOrbPacket {
 pub struct EntityVelocityPacket {
     /// EID of the entity.
     pub entity_id: VarInt,
-
+    
     /// Velocity on the X axis.
     pub velocity_x: i16,
 
@@ -454,100 +470,226 @@ pub struct EntityVelocityPacket {
     pub velocity_z: i16,
 }
 
+/// Sent by the server when a list of entities is to be destroyed on the client.
 #[derive(PacketDef)]
 pub struct DestroyEntitiesPacket {
+    /// Number of elements in the following array.
     pub count: VarInt,
+
+    /// The list of entities of destroy.
     // pub entities_id: Vec<VarInt>,
 }
 
+/// This packet may be used to initialize an entity.
+///
+/// For player entities, either this packet or any move/look packet is sent every game tick. So the
+/// meaning of this packet is basically that the entity did not move/look since the last such
+/// packet.
 #[derive(PacketDef)]
 pub struct EntityPacket {
+    /// EID of the Entity.
     pub entity_id: VarInt,
 }
 
+/// This packet is sent by the server when an entity moves less then 4 blocks; if an entity moves
+/// more than 4 blocks Entity Teleport should be sent instead.
+///
+/// This packet allows at most four blocks movement in any direction, because byte range is from
+/// -128 to 127.
 #[derive(PacketDef)]
 pub struct EntityRelativeMovePacket {
+    /// EID of the Entity.
     pub entity_id: VarInt,
+
+    /// Change in X position as a Fixed-Point number
     pub delta_x: i8,
+
+    /// Change in Y position as a Fixed-Point number
     pub delta_y: i8,
+
+    /// Change in Z position as a Fixed-Point number
     pub delta_z: i8,
+
+    // /// Whether the player is touching the ground or not.
     // pub on_ground: bool,
 }
 
+/// This packet is sent by the server when an entity rotates.
 #[derive(PacketDef)]
 pub struct EntityLookPacket {
+    /// The EID of the Entity.
     pub entity_id: VarInt,
+
+    // /// New angle, not a delta.
     // pub yaw: Angle,
+
+    // /// New angle, not a delta.
     // pub pitch: Angle,
+    
+    // /// Whether the player is touching the ground or not.
     // pub on_ground: bool,
 }
 
+/// This packet is sent by the server when an entity rotates and moves. Since a byte range is
+/// limited from -128 to 127, and movement is offset of fixed-point numbers, this packet allows at
+/// most four blocks movement in any direction. (-128/32 == -4)
 #[derive(PacketDef)]
 pub struct EntityLookAndRelativeMovePacket {
+    /// The EID of the Entity.
     pub entity_id: VarInt,
+
+    /// Change in X position as a Fixed-Point number.
     pub delta_x: i8,
+
+    /// Change in Y position as a Fixed-Point number.
     pub delta_y: i8,
+
+    /// Change in Z position as a Fixed-Point number.
     pub delta_z: i8,
+
+    // /// New angle, not a delta.
     // pub yaw: Angle,
+
+    // /// New angle, not a delta.
     // pub pitch: Angle,
+
+    // /// Whether the player is touching the ground or not.
     // pub on_ground: bool,
 }
 
+/// This packet is sent by the server when an entity moves more than 4 blocks.
 #[derive(PacketDef)]
 pub struct EntityTeleportPacket {
+    /// The EID of the Entity.
     pub entity_id: VarInt,
+
+    /// Player X as a Fixed-Point number.
     pub x: i8,
+
+    /// Player Y as a Fixed-Point number.
     pub y: i8,
+
+    /// Player Z as a Fixed-Point number.
     pub z: i8,
-    pub yaw: Angle,
-    pub pitch: Angle,
+
+    // /// New angle, not a delta
+    // pub yaw: Angle,
+
+    // /// New angle, not a delta
+    // pub pitch: Angle,
+
+    // /// Whether the player is touching the ground or not.
     // pub on_ground: bool,
 }
 
+/// Changes the direction an entity's head is facing.
 #[derive(PacketDef)]
 pub struct EntityHeadLookPacket {
+    /// The EID of the Entity.
     pub entity_id: VarInt,
+
+    /// New angle, not a delta
     pub yaw: Angle,
 }
 
+/// Updates an Entity's status.
 #[derive(PacketDef)]
 pub struct EntityStatusPacket {
+    /// The EID of the Entity.
     pub entity_id: i32,
+
+    /// The status value, based on the following table:
+    ///
+    /// | Entity Status | Meaning
+    /// |---------------|--------------------------------------------------------------------------|
+    /// | 1             | Sent when resetting a mob spawn minecart's timer / Rabbit jump animation |
+    /// | 2             | Living Entity hurt                                                       |
+    /// | 3             | Living Entity dead                                                       |
+    /// | 4             | Iron Golem throwing up arms                                              |
+    /// | 6             | Wolf/Ocelot/Horse taming — Spawn “heart” particles                       |
+    /// | 7             | Wolf/Ocelot/Horse tamed — Spawn “smoke” particles                        |
+    /// | 8             | Wolf shaking water — Trigger the shaking animation                       |
+    /// | 9             | (of self) Eating accepted by server                                      |
+    /// | 10            | Sheep eating grass                                                       |
+    /// | 10            | Play TNT ignite sound                                                    |
+    /// | 11            | Iron Golem handing over a rose                                           |
+    /// | 12            | Villager mating — Spawn “heart” particles                                |
+    /// | 13            | Spawn particles indicating that a villager is angry and seeking revenge  |
+    /// | 14            | Spawn happy particles near a villager                                    |
+    /// | 15            | Witch animation — Spawn “magic” particles                                |
+    /// | 16            | Play zombie converting into a villager sound                             |
+    /// | 17            | Firework exploding                                                       |
+    /// | 18            | Animal in love (ready to mate) — Spawn “heart” particles                 |
+    /// | 19            | Reset squid rotation                                                     |
+    /// | 20            | Spawn explosion particle — works for some living entities                |
+    /// | 21            | Play guardian sound — works for only for guardians                       |
+    /// | 22            | Enables reduced debug for players                                        |
+    /// | 23            | Disables reduced debug for players
     pub status: i8,
 }
 
+/// This packet is sent when a player has been attached to an entity (e.g. Minecart.)
 #[derive(PacketDef)]
 pub struct AttachEntityPacket {
+    /// Attached Entity's EID.
     pub entity_id: i32,
+
+    /// EID of the Vehicle. Set to -1 to detach.
     pub vehicle_id: i32,
+
+    // /// If true leashes the entity to the vehicle.
     // pub leash: bool,
 }
 
+/// Updates one or more metadata properties for an existing entity. Any properties not included in
+/// the Metadata field are left unchanged.
 #[derive(PacketDef)]
 pub struct EntityMetadataPacket {
+    /// EID of the Entity.
     pub entity_id: VarInt,
+
+    // /// Metadata of Entity.
     // pub metadata: Metadata
 }
 
 #[derive(PacketDef)]
 pub struct EntityEffectPacket {
+    /// EID of the Entity.
     pub entity_id: VarInt,
+
+    /// ID of the Effect.
     pub effect_id: i8,
+
+    /// Notchian client displays effect level as Amplifier + 1.
     pub amplifier: i8,
+
+    /// Duration in seconds.
     pub duration: VarInt,
+
+    // /// Whether particles should be hidden or not.
     // pub hide_particles: bool,
 }
 
 #[derive(PacketDef)]
 pub struct RemoveEntityEffectPacket {
+    /// EID of the Entity.
     pub entity_id: VarInt,
+
+    /// ID of the Effect.
     pub effect_id: i8,
 }
 
+/// Sent by the server when the client should change experience levels.
 #[derive(PacketDef)]
 pub struct SetExperiencePacket {
+    /// Between 0 and 1.
     pub bar: f32,
+
+    /// The level.
     pub level: VarInt,
+
+    /// See [Experience#Leveling](https://minecraft.fandom.com/wiki/Experience%23Leveling_up) up on
+    /// the Minecraft Wiki for Total Experience to Level conversion.
     pub total_exp: VarInt,
 }
 
