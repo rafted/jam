@@ -1,7 +1,7 @@
-use crate::position::Position;
-use protocol_macro::PacketDef;
 use crate::chat::ChatComponent;
+use crate::position::Position;
 use crate::varint::VarInt;
+use protocol_macro::PacketDef;
 
 /// The server will frequently send out a keep-alive, each containing a random ID. The client must
 /// respond with the same packet.
@@ -40,7 +40,6 @@ pub struct UseEntityPacket {
     /// 1: attack,
     /// 2: interact at
     pub type_: VarInt,
-
     // /// only if type_ is interacted at (2)
     // pub target_x: Option<f32>,
     // /// only if type_ is interacted at (2)
@@ -89,7 +88,6 @@ pub struct PlayerPositionPacket {
 
     /// Absolute position.
     pub z: f64,
-
     // /// True if the client is on the ground, false otherwise.
     // pub on_ground: bool,
 }
@@ -131,7 +129,6 @@ pub struct PlayerPositionLook {
 
     /// Absolute rotation on the Y Axis, in degrees
     pub pitch: f32,
-
     // /// True if the client is on the ground, False otherwise
     // pub on_ground: bool,
 }
@@ -153,7 +150,6 @@ pub struct PlayerPositionAndLookPacket {
 
     /// Absolute rotation on the Y Axis, in degrees.
     pub pitch: f32,
-
     // /// True if the client is on the ground, false otherwise.
     // pub on_ground: bool,
 }
@@ -232,7 +228,6 @@ pub struct PlayerBlockPlacementPacket {
     pub face: i8,
 
     // pub held_item: Slot,
-    
     /// The position of the crosshair on the block.
     pub cursor_position_x: i8,
     pub cursor_position_y: i8,
@@ -392,7 +387,6 @@ pub struct ConfirmTransactionPacket {
     /// Every action that is to be accepted has a unique number. This field corresponds to that
     /// number.
     pub action_number: i16,
-
     // /// Whether the action was accepted.
     // pub accepted: bool,
 }
@@ -422,7 +416,6 @@ pub struct ConfirmTransactionPacket {
 pub struct CreativeInventoryActionPacket {
     /// Inventory slot.
     pub slot: i16,
-
     // pub clicked_item: Slot,
 }
 
@@ -482,7 +475,6 @@ pub struct PlayerAbilitiesPacket {
 pub struct TabCompletePacket {
     /// All text behind the cursor.
     pub text: String,
-
     // pub has_position: bool,
 
     // /// The position of the block being looked at. Only sent if Has Position is true.
@@ -507,7 +499,6 @@ pub struct ClientSettingsPacket {
 
     // /// “Colors” multiplayer setting.
     // pub chat_colors: bool,
-    
     /// Skin parts.
     ///
     /// Bit 0 (0x01): Cape enabled
@@ -542,10 +533,8 @@ pub struct ClientStatusPacket {
 #[derive(PacketDef)]
 pub struct PluginMessagePacket {
     // Name of the plugin channel used to send the data
-
     /// Any data, depending on the channel. MC| channels are documented here.
     pub channel: String,
-
     // /// TODO: According to #mcdevs, the length of Data is known only from the packet length, since
     // /// the packet has no length field of any kind.
     // pub data: Vec<i8>,

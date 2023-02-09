@@ -1,6 +1,4 @@
-use std::{
-    io::{Read, Write},
-};
+use std::io::{Read, Write};
 
 use crate::encoding::Encodable;
 

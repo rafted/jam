@@ -1,4 +1,6 @@
-use std::marker::PhantomData;
+use std::{
+    marker::PhantomData,
+};
 
 use serde::{Deserialize, Serialize};
 use typed_builder::TypedBuilder;
