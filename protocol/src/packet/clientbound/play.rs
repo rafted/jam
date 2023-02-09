@@ -215,12 +215,12 @@ pub struct PlayerPositionAndLookPacket {
     // /// <Dinnerbone> It's a bitfield, X/Y/Z/Y_ROT/X_ROT. If X is set, the x value is relative and not absolute.
     // /// ```
     // ///
-    // /// Field 	Bit
-    // /// X 	    0x01
-    // /// Y 	    0x02
-    // /// Z 	    0x04
-    // /// Y_ROT 	0x08
-    // /// X_ROT 	0x10
+    // /// Field      Bit
+    // /// X          0x01
+    // /// Y          0x02
+    // /// Z          0x04
+    // /// Y_ROT      0x08
+    // /// X_ROT      0x10
     // pub flags: BitField
 }
 
@@ -251,13 +251,13 @@ pub struct AnimationPacket {
     /// Animation ID.
     ///
     /// Animation can be one of the following values:
-    /// ID 	Animation
-    /// 0 	Swing arm
-    /// 1 	Take damage
-    /// 2 	Leave bed
-    /// 3 	Eat food
-    /// 4 	Critical effect
-    /// 5 	Magic critical effect
+    /// ID     Animation
+    /// 0      Swing arm
+    /// 1      Take damage
+    /// 2      Leave bed
+    /// 3      Eat food
+    /// 4      Critical effect
+    /// 5      Magic critical effect
     pub animation: u8,
 }
 
@@ -682,15 +682,15 @@ pub struct SetExperiencePacket {
 /// Sets attributes on the given entity.
 ///
 /// # Property Table
-/// | Key 	                        Default 	        Min 	    Max 	            Label                       |
-/// |---------------------------------------------------------------------------------------------------------------|
-/// | generic.maxHealth 	        20.0 	            0.0 	    Double.MaxValue 	Max Health                  |
-/// | generic.followRange 	        32.0 	            0.0 	    2048.0 	            Follow Range                |
-/// | generic.knockbackResistance 	0.0 	            0.0 	    1.0 	            Knockback Resistance        |
-/// | generic.movementSpeed 	    0.699999988079071 	0.0 	    Double.MaxValue 	Movement Speed              |
-/// | generic.attackDamage 	        2.0 	            0.0 	    Double.MaxValue 	                            |
-/// | horse.jumpStrength 	        0.7 	            0.0 	    2.0 	            Jump Strength               |
-/// | zombie.spawnReinforcements 	0.0 	            0.0 	    1.0 	            Spawn Reinforcements Chance |
+/// | Key                              Default              Min          Max                  Label                       |
+/// |--------------------------------|--------------------|------------|--------------------|-----------------------------|
+/// | generic.maxHealth              | 20.0               | 0.0        | Double.MaxValue    | Max Health                  |
+/// | generic.followRange            | 32.0               | 0.0        | 2048.0             | Follow Range                |
+/// | generic.knockbackResistance    | 0.0                | 0.0        | 1.0                | Knockback Resistance        |
+/// | generic.movementSpeed          | 0.699999988079071  | 0.0        | Double.MaxValue    | Movement Speed              |
+/// | generic.attackDamage           | 2.0                | 0.0        | Double.MaxValue    |                             |
+/// | horse.jumpStrength             | 0.7                | 0.0        | 2.0                | Jump Strength               |
+/// | zombie.spawnReinforcements     | 0.0                | 0.0        | 1.0                | Spawn Reinforcements Chance |
 #[derive(PacketDef)]
 pub struct EntityPropertiesPacket {
     /// EID of the Entity.
@@ -927,17 +927,18 @@ pub struct ParticlePacket {
 /// It appears when a bed can't be used as a spawn point and when the rain state changes.
 ///
 /// # Reason codes Table
-/// |--------------------------------------------|--------------------------------------------------------------------------------------------------------------------------|
-/// | 0 | Invalid Bed                            |                                                                                                                          |
-/// | 1 | End raining                            |                                                                                                                          |
-/// | 2 | Begin raining                          |                                                                                                                          |
-/// | 3 | Change game mode                       | 0: Survival, 1: Creative, 2: Adventure, 3: Spectator                                                                     |
-/// | 4 | Enter credits                          |                                                                                                                          |
-/// | 5 | Demo message 	                         | 0: Show welcome to demo screen, 101: Tell movement controls, 102: Tell jump control, 103: Tell inventory control         |
-/// | 6 | Arrow hitting player 	                 | Appears to be played when an arrow strikes another player in Multiplayer                                                 |
-/// | 7 | Fade value                             | The current darkness value. 1 = Dark, 0 = Bright, Setting the value higher causes the game to change color and freeze    |
-/// | 8 | Fade time	                             | Time in ticks for the sky to fade                                                                                        |
-/// | 10| Play mob appearance (effect and sound) | Unknown                                                                                                                  |
+/// | ID | Reason                                 | Note                                                                                                                     |
+/// |---------------------------------------------|--------------------------------------------------------------------------------------------------------------------------|
+/// | 0  | Invalid Bed                            |                                                                                                                          |
+/// | 1  | End raining                            |                                                                                                                          |
+/// | 2  | Begin raining                          |                                                                                                                          |
+/// | 3  | Change game mode                       | 0: Survival, 1: Creative, 2: Adventure, 3: Spectator                                                                     |
+/// | 4  | Enter credits                          |                                                                                                                          |
+/// | 5  | Demo message                           | 0: Show welcome to demo screen, 101: Tell movement controls, 102: Tell jump control, 103: Tell inventory control         |
+/// | 6  | Arrow hitting player                   | Appears to be played when an arrow strikes another player in Multiplayer                                                 |
+/// | 7  | Fade value                             | The current darkness value. 1 = Dark, 0 = Bright, Setting the value higher causes the game to change color and freeze    |
+/// | 8  | Fade time                              | Time in ticks for the sky to fade                                                                                        |
+/// | 10 | Play mob appearance (effect and sound) | Unknown                                                                                                                  |
 #[derive(PacketDef)]
 pub struct ChangeGameStatePacket {
     /// Reason code.
