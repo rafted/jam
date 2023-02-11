@@ -1,17 +1,13 @@
-use std::io::Cursor;
-
 use bytes::BytesMut;
 use protocol::{state::State, varint::VarInt, encoding::Encodable};
 use tokio::{net::TcpStream, io::{AsyncRead, AsyncReadExt, BufReader, Interest}};
 
 pub struct Connection {
-    pub stream: TcpStream,
     pub state: State,
 }
 
 impl Connection {
-    pub async fn handle_loop(self) -> anyhow::Result<()> {
-        let mut stream = self.stream;
+    pub async fn handle_loop(self, mut stream: TcpStream) -> anyhow::Result<()> {
         let mut buf = BytesMut::new();
 
         loop {
@@ -28,7 +24,13 @@ impl Connection {
             let length = VarInt::decode(&mut buf)?;
             let id = VarInt::decode(&mut buf)?;
 
-            println!("read: {}, length: {}", read, length.0);
+            self.handle_packet(id.0, &mut buf);
         }
     }
+
+    pub fn handle_packet(&self, id: i32, buf: &mut BytesMut) -> anyhow::Result<()> {
+        todo!()
+    }
+
 }
+

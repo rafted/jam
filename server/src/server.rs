@@ -23,11 +23,10 @@ impl<'a> Server<'a> {
 
             tokio::spawn(async move {
                 let connection = Connection {
-                    stream,
                     state: State::default(),
                 };
 
-                connection.handle_loop().await;
+                connection.handle_loop(stream).await;
             });
         }
     }
