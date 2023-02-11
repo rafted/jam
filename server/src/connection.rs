@@ -1,6 +1,9 @@
 use bytes::BytesMut;
-use protocol::{state::State, varint::VarInt, encoding::Encodable};
-use tokio::{net::TcpStream, io::{AsyncRead, AsyncReadExt, BufReader, Interest}};
+use protocol::{encoding::Encodable, state::State, varint::VarInt};
+use tokio::{
+    io::{AsyncReadExt, Interest},
+    net::TcpStream,
+};
 
 pub struct Connection {
     pub state: State,
@@ -21,16 +24,14 @@ impl Connection {
             println!("read {} bytes", read);
 
             // read packet frame
-            let length = VarInt::decode(&mut buf)?;
+            let _length = VarInt::decode(&mut buf)?;
             let id = VarInt::decode(&mut buf)?;
 
             self.handle_packet(id.0, &mut buf);
         }
     }
 
-    pub fn handle_packet(&self, id: i32, buf: &mut BytesMut) -> anyhow::Result<()> {
+    pub fn handle_packet(&self, _id: i32, _buf: &mut BytesMut) -> anyhow::Result<()> {
         todo!()
     }
-
 }
-
