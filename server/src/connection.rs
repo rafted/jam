@@ -1,3 +1,4 @@
+use anyhow::anyhow;
 use bytes::BytesMut;
 use protocol::{encoding::Encodable, state::State, varint::VarInt, packet::serverbound::handshaking::HandshakePacket};
 use tokio::{
@@ -31,19 +32,24 @@ impl Connection {
         }
     }
 
-    pub fn handle_packet(&mut self, id: i32, buf: &mut BytesMut) -> anyhow::Result<()> {
+    pub fn handle_packet(&mut self, id: i32, buf: &mut BytesMut) -> anyhow::Result<(), anyhow::Error> {
 
         match self.state {
             State::Handshaking => {
 
                 match id {
                     0 => {
+                        // read handshake packet
                         let packet = HandshakePacket::decode(buf)?;
 
-                        println!("next_state: {}", packet.next_state.0);
-                        println!("port: {}", packet.server_port);
-                        println!("address: {}", packet.server_address);
-                        println!("protocol: {}", packet.protocol_version.0);
+                        // switch to next state
+                        match packet.next_state.0 {
+                            1 => self.state = State::Status,
+                            2 => self.state = State::Login,
+
+                            _ => return Err(anyhow!("invalid next_state (must be either 1 or 2)"))
+                        }
+
                     }
 
                     _ => todo!("implement packet")
