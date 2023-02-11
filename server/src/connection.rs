@@ -50,6 +50,7 @@ impl Connection {
                 }
 
             },
+            State::Status => todo!("status state"),
             State::Login => todo!("login state"),
             State::Play => todo!("play state"),
             State::Closed => todo!("closed state"),

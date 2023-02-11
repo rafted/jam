@@ -2,6 +2,7 @@
 pub enum State {
     #[default]
     Handshaking,
+    Status,
     Login,
     Play,
     Closed,
