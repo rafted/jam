@@ -2,7 +2,7 @@ use std::io::Cursor;
 
 use bytes::BytesMut;
 use protocol::{state::State, varint::VarInt, encoding::Encodable};
-use tokio::{net::TcpStream, io::{AsyncRead, AsyncReadExt, BufReader}};
+use tokio::{net::TcpStream, io::{AsyncRead, AsyncReadExt, BufReader, Interest}};
 
 pub struct Connection {
     pub stream: TcpStream,
@@ -15,20 +15,20 @@ impl Connection {
         let mut buf = BytesMut::new();
 
         loop {
-            let read = stream.read_buf(&mut buf).await?;
-            println!("[");
+            let ready = stream.ready(Interest::READABLE).await?;
 
+            if !ready.is_readable() {
+                continue;
+            }
+
+            let read = stream.read_buf(&mut buf).await?;
             println!("read {} bytes", read);
 
             // read packet frame
             let length = VarInt::decode(&mut buf)?;
             let id = VarInt::decode(&mut buf)?;
 
-            println!("length: {}", length.0);
-            println!("id: {}", id.0);
-
-            println!("]")
-
+            println!("read: {}, length: {}", read, length.0);
         }
     }
 }
