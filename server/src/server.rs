@@ -27,7 +27,7 @@ impl<'a> Server<'a> {
                     state: State::default(),
                 };
 
-                connection.handle_loop();
+                connection.handle_loop().await;
             });
         }
     }

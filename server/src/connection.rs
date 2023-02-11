@@ -1,5 +1,7 @@
-use protocol::state::State;
-use tokio::net::TcpStream;
+use std::io::{Cursor, BufReader};
+
+use protocol::{state::State, varint::VarInt, encoding::Encodable};
+use tokio::{net::TcpStream, io::{AsyncRead, AsyncReadExt}};
 
 pub struct Connection {
     pub stream: TcpStream,
@@ -7,9 +9,17 @@ pub struct Connection {
 }
 
 impl Connection {
-    pub fn handle_loop(self) {
-        let _stream = self.stream;
+    pub async fn handle_loop(self) -> anyhow::Result<()> {
+        let mut stream = self.stream;
+        let mut reader = BufReader::new(stream);
+        // let mut cursor = Cursor::new(reader);
 
-        loop {}
+        loop {
+            // read packet frame
+            let id = VarInt::decode(&mut reader)?;
+
+            println!("id: {}", id.0);
+
+        }
     }
 }
