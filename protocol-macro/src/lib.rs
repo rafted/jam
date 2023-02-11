@@ -66,13 +66,13 @@ pub fn define_packet(input: TokenStream) -> TokenStream {
     // Generate the implementation of the encode and decode methods
     let expanded = quote! {
         impl #type_params crate::packet::Packet for #name #type_params {
-            fn decode<T: std::io::Read>(reader: &mut T) -> anyhow::Result<Self> {
+            fn decode(reader: &mut dyn bytes::Buf) -> anyhow::Result<Self> {
                 Ok(Self {
                     #decode_expand
                 })
             }
 
-            fn encode<T: std::io::Write>(&self, writer: &mut T) -> anyhow::Result<()> {
+            fn encode(&self, writer: &mut dyn bytes::BufMut) -> anyhow::Result<()> {
                 #encode_expand
                 Ok(())
             }

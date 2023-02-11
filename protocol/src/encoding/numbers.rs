@@ -1,29 +1,30 @@
 use std::io::{Read, Write};
 
 use byteorder::{BigEndian, ReadBytesExt};
+use bytes::{Buf, BufMut};
 
 use super::Encodable;
 
 impl Encodable for i8 {
-    fn decode<T: Read>(reader: &mut T) -> anyhow::Result<Self> {
-        let val = reader.read_i8()?;
+    fn decode(reader: &mut dyn Buf) -> anyhow::Result<Self> {
+        let val = reader.reader().read_i8()?;
         Ok(val)
     }
 
-    fn encode<T: Write>(&self, writer: &mut T) -> anyhow::Result<()> {
-        writer.write_all(&self.to_be_bytes())?;
+    fn encode(&self, writer: &mut dyn BufMut) -> anyhow::Result<()> {
+        writer.writer().write_all(&self.to_be_bytes())?;
         Ok(())
     }
 }
 
 impl Encodable for u8 {
-    fn decode<T: Read>(reader: &mut T) -> anyhow::Result<Self> {
-        let val = reader.read_u8()?;
+    fn decode(reader: &mut dyn Buf) -> anyhow::Result<Self> {
+        let val = reader.reader().read_u8()?;
         Ok(val)
     }
 
-    fn encode<T: Write>(&self, writer: &mut T) -> anyhow::Result<()> {
-        writer.write_all(&self.to_be_bytes())?;
+    fn encode(&self, writer: &mut dyn BufMut) -> anyhow::Result<()> {
+        writer.writer().write_all(&self.to_be_bytes())?;
         Ok(())
     }
 }
@@ -32,13 +33,13 @@ macro_rules! gen_num_encode {
     ($ty:ty) => {
         ::paste::paste! {
             impl Encodable for $ty {
-                fn decode<T: Read>(reader: &mut T) -> anyhow::Result<Self> {
-                    let val = reader.[<read_ $ty>]::<BigEndian>()?;
+                fn decode(reader: &mut dyn Buf) -> anyhow::Result<Self> {
+                    let val = reader.reader().[<read_ $ty>]::<BigEndian>()?;
                     Ok(val)
                 }
 
-                fn encode<T: Write>(&self, writer: &mut T) -> anyhow::Result<()> {
-                    writer.write_all(&self.to_be_bytes())?;
+                fn encode(&self, writer: &mut dyn BufMut) -> anyhow::Result<()> {
+                    writer.writer().write_all(&self.to_be_bytes())?;
                     Ok(())
                 }
             }

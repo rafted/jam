@@ -1,7 +1,6 @@
-use std::num::TryFromIntError;
-
+use std::{num::TryFromIntError, io::Write};
+use bytes::{Buf, BufMut};
 use byteorder::{BigEndian, ReadBytesExt};
-
 use crate::encoding::Encodable;
 
 pub type Angle = f32;
@@ -14,8 +13,8 @@ pub struct Position {
 }
 
 impl Encodable for Position {
-    fn decode<T: std::io::Read>(reader: &mut T) -> anyhow::Result<Self> {
-        let value = reader.read_i64::<BigEndian>()?;
+    fn decode(reader: &mut dyn Buf) -> anyhow::Result<Self> {
+        let value = reader.reader().read_i64::<BigEndian>()?;
 
         // we technically don't need this function here, but it's easier like this so we can handle the error mapping in a single call - instead of doing it for every single try_into() statement,
         // we also could implement From<TryFromIntError> into std::io::Error, but that's a lot of work, and I think this works just as fine.
@@ -33,14 +32,14 @@ impl Encodable for Position {
         Ok(Position { x, y, z })
     }
 
-    fn encode<T: std::io::Write>(&self, writer: &mut T) -> anyhow::Result<()> {
+    fn encode(&self, writer: &mut dyn BufMut) -> anyhow::Result<()> {
         let value: i64 = (((self.x & 0x3FFFFFF) as i64) << 38) as i64
             | ((self.z & 0x3FFFFFF) << 12) as i64
             | (self.y as i32 & 0xFFF) as i64;
 
         let buf = value.to_be_bytes();
 
-        writer.write_all(&buf)?;
+        writer.writer().write_all(&buf)?;
         Ok(())
     }
 }

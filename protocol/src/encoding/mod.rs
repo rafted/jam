@@ -1,11 +1,11 @@
-use std::io::{Read, Write};
+use bytes::{BufMut, Buf};
 
 pub trait Encodable
 where
     Self: Sized,
 {
-    fn decode<T: Read>(reader: &mut T) -> anyhow::Result<Self>;
-    fn encode<T: Write>(&self, writer: &mut T) -> anyhow::Result<()>;
+    fn decode(reader: &mut dyn Buf) -> anyhow::Result<Self>;
+    fn encode(&self, writer: &mut dyn BufMut) -> anyhow::Result<()>;
 }
 
 pub mod array;

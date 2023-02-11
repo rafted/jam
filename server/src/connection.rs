@@ -1,7 +1,8 @@
-use std::io::{Cursor, BufReader};
+use std::io::Cursor;
 
+use bytes::BytesMut;
 use protocol::{state::State, varint::VarInt, encoding::Encodable};
-use tokio::{net::TcpStream, io::{AsyncRead, AsyncReadExt}};
+use tokio::{net::TcpStream, io::{AsyncRead, AsyncReadExt, BufReader}};
 
 pub struct Connection {
     pub stream: TcpStream,
@@ -11,14 +12,22 @@ pub struct Connection {
 impl Connection {
     pub async fn handle_loop(self) -> anyhow::Result<()> {
         let mut stream = self.stream;
-        let mut reader = BufReader::new(stream);
-        // let mut cursor = Cursor::new(reader);
+        let mut buf = BytesMut::new();
 
         loop {
-            // read packet frame
-            let id = VarInt::decode(&mut reader)?;
+            let read = stream.read_buf(&mut buf).await?;
+            println!("[");
 
+            println!("read {} bytes", read);
+
+            // read packet frame
+            let length = VarInt::decode(&mut buf)?;
+            let id = VarInt::decode(&mut buf)?;
+
+            println!("length: {}", length.0);
             println!("id: {}", id.0);
+
+            println!("]")
 
         }
     }

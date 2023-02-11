@@ -1,4 +1,4 @@
-use std::io::{Read, Write};
+use bytes::{BufMut, Buf};
 
 use crate::array::CountedArray;
 
@@ -10,7 +10,7 @@ where
     K: Encodable + Into<usize> + From<usize>,
     U: Encodable,
 {
-    fn decode<T: Read>(reader: &mut T) -> anyhow::Result<Self> {
+    fn decode(reader: &mut dyn Buf) -> anyhow::Result<Self> {
         let mut vec = Vec::<U>::new();
         let len: usize = K::decode(reader)?.into();
 
@@ -24,7 +24,7 @@ where
         })
     }
 
-    fn encode<T: Write>(&self, writer: &mut T) -> anyhow::Result<()> {
+    fn encode(&self, writer: &mut dyn BufMut) -> anyhow::Result<()> {
         assert!(self.arr.len() == self.len);
         self.len.encode(writer)?;
 

@@ -1,4 +1,4 @@
-use std::io::{Read, Write};
+use bytes::{Buf, BufMut};
 
 use crate::encoding::Encodable;
 
@@ -14,16 +14,16 @@ pub trait Packet: Encodable
 where
     Self: Sized,
 {
-    fn decode<T: Read>(reader: &mut T) -> anyhow::Result<Self>;
-    fn encode<T: Write>(&self, writer: &mut T) -> anyhow::Result<()>;
+    fn decode(reader: &mut dyn Buf) -> anyhow::Result<Self>;
+    fn encode(&self, writer: &mut dyn BufMut) -> anyhow::Result<()>;
 }
 
 impl<P: Packet> Encodable for P {
-    fn decode<T: Read>(reader: &mut T) -> anyhow::Result<Self> {
+    fn decode(reader: &mut dyn Buf) -> anyhow::Result<Self> {
         <Self as Packet>::decode(reader)
     }
 
-    fn encode<T: Write>(&self, writer: &mut T) -> anyhow::Result<()> {
+    fn encode(&self, writer: &mut dyn BufMut) -> anyhow::Result<()> {
         <Self as Packet>::encode(self, writer)
     }
 }
@@ -31,6 +31,7 @@ impl<P: Packet> Encodable for P {
 pub mod test {
     use std::marker::PhantomData;
 
+    use bytes::{Buf, BufMut};
     use protocol_macro::PacketDef;
 
     use crate::encoding::Encodable;
@@ -46,14 +47,14 @@ pub mod test {
     }
 
     impl<'a> Encodable for Test<'a> {
-        fn decode<T: std::io::Read>(reader: &mut T) -> anyhow::Result<Self> {
+        fn decode(reader: &mut dyn Buf) -> anyhow::Result<Self> {
             Ok(Test {
                 val: String::decode(reader)?,
                 phantom: PhantomData,
             })
         }
 
-        fn encode<T: std::io::Write>(&self, writer: &mut T) -> anyhow::Result<()> {
+        fn encode(&self, writer: &mut dyn BufMut) -> anyhow::Result<()> {
             self.val.encode(writer)?;
             Ok(())
         }
