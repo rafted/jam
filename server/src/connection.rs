@@ -1,5 +1,7 @@
+use std::fmt::format;
+
 use anyhow::anyhow;
-use bytes::BytesMut;
+use bytes::{BytesMut, Buf};
 use protocol::{
     encoding::Encodable,
     packet::{
@@ -36,15 +38,17 @@ impl Connection {
                 println!("READING FROM DA SAME BUFFER AND STUFF");
                 // read packet frame
                 let length = VarInt::decode(&mut buf)?;
+                let pre = format!("{:?}", buf);
                 let id = VarInt::decode(&mut buf)?;
+                let post = format!("{:?}", buf);
+                
+                assert_ne!(pre, post);
 
                 println!("packet length: {}", length.0);
                 println!("packet id: {:#02x}", id.0);
 
                 self.handle_packet(id.0, &mut buf).await?;
-                buf.truncate(length.0 as usize + 3);
             }
-
         }
     }
 
@@ -65,7 +69,7 @@ impl Connection {
                             1 => self.state = State::Status,
                             2 => self.state = State::Login,
 
-                            _ => return Err(anyhow!("invalid next_state (must be either 1 or 2)")),
+                            _ => return Err(anyhow!("invalid next_state (must be either 1 or 2), are you reading the wrong packet?")),
                         }
                     }
 
