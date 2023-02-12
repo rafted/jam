@@ -1,5 +1,5 @@
 use anyhow::anyhow;
-use bytes::BytesMut;
+use bytes::{BufMut, BytesMut};
 use protocol::{
     encoding::Encodable,
     packet::{
@@ -10,7 +10,7 @@ use protocol::{
     varint::VarInt,
 };
 use tokio::{
-    io::{AsyncReadExt, Interest},
+    io::{AsyncReadExt, AsyncWriteExt, Interest},
     net::TcpStream,
 };
 
@@ -35,14 +35,17 @@ impl Connection {
             println!("read {} bytes", read);
 
             // read packet frame
-            let _length = VarInt::decode(&mut buf)?;
+            let length = VarInt::decode(&mut buf)?;
             let id = VarInt::decode(&mut buf)?;
 
-            self.handle_packet(id.0, &mut buf)?;
+            println!("packet length: {:#06x}", length.0);
+            println!("packet id: {:#06x}", id.0);
+
+            self.handle_packet(id.0, &mut buf).await?;
         }
     }
 
-    pub fn handle_packet(
+    pub async fn handle_packet(
         &mut self,
         id: i32,
         buf: &mut BytesMut,
@@ -63,7 +66,7 @@ impl Connection {
                         }
                     }
 
-                    _ => todo!("implement packet"),
+                    _ => println!("unimplemented packet: {}", id),
                 }
             }
             State::Status => {
@@ -90,17 +93,21 @@ impl Connection {
                             .to_string(),
                         };
 
-                        todo!("send response")
+                        let mut bytes = BytesMut::new();
+                        packet.encode(&mut bytes)?;
+
+                        self.stream.write(&bytes).await?;
                     }
 
-                    _ => todo!("implement packet"),
+                    _ => println!("unimplemented packet: {}", id),
                 }
             }
-            State::Login => todo!("login state"),
-            State::Play => todo!("play state"),
-            State::Closed => todo!("closed state"),
+            State::Login => println!("login state"),
+            State::Play => println!("play state"),
+            State::Closed => println!("closed state"),
         }
 
+        self.stream.flush().await?;
         Ok(())
     }
 }

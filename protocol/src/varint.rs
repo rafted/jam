@@ -13,6 +13,12 @@ impl Into<usize> for VarInt {
     }
 }
 
+impl Into<i32> for VarInt {
+    fn into(self) -> i32 {
+        self.0 as i32
+    }
+}
+
 impl Encodable for VarInt {
     fn decode(reader: &mut dyn Buf) -> anyhow::Result<Self> {
         let mut result = 0;
