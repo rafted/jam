@@ -1,5 +1,5 @@
 use anyhow::anyhow;
-use bytes::{BufMut, BytesMut};
+use bytes::BytesMut;
 use protocol::{
     encoding::Encodable,
     packet::{
@@ -10,7 +10,7 @@ use protocol::{
     varint::VarInt,
 };
 use tokio::{
-    io::{AsyncReadExt, AsyncWriteExt, Interest},
+    io::AsyncWriteExt,
     net::TcpStream,
 };
 
@@ -32,7 +32,8 @@ impl Connection {
                 _ => (),
             };
 
-            if !buf.is_empty() {
+            while !buf.is_empty() {
+                println!("READING FROM DA SAME BUFFER AND STUFF");
                 // read packet frame
                 let length = VarInt::decode(&mut buf)?;
                 let id = VarInt::decode(&mut buf)?;
@@ -43,6 +44,7 @@ impl Connection {
                 self.handle_packet(id.0, &mut buf).await?;
                 buf.truncate(length.0 as usize + 3);
             }
+
         }
     }
 
@@ -98,7 +100,6 @@ impl Connection {
                         packet.encode(&mut bytes)?;
 
                         self.stream.write(&bytes).await?;
-                        println!("test");
                     }
 
                     _ => println!("unimplemented packet: {}", id),
@@ -109,7 +110,6 @@ impl Connection {
             State::Closed => println!("closed state"),
         }
 
-        println!("flushing");
         self.stream.flush().await?;
         Ok(())
     }

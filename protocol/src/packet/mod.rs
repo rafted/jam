@@ -20,7 +20,7 @@ where
 
 impl<P: Packet> Encodable for P {
     fn decode(reader: &mut dyn Buf) -> anyhow::Result<Self> {
-        <Self as Packet>::decode(reader)
+        return <Self as Packet>::decode(reader);
     }
 
     fn encode(&self, writer: &mut dyn BufMut) -> anyhow::Result<()> {
