@@ -25,23 +25,24 @@ impl Connection {
 
         loop {
             let stream = &mut self.stream;
-            let ready = stream.ready(Interest::READABLE).await?;
 
-            if !ready.is_readable() {
-                continue;
+            match stream.try_read_buf(&mut buf) {
+                Ok(0) => (),
+                Ok(read) => println!("read {} bytes", read),
+                _ => (),
+            };
+
+            if !buf.is_empty() {
+                // read packet frame
+                let length = VarInt::decode(&mut buf)?;
+                let id = VarInt::decode(&mut buf)?;
+
+                println!("packet length: {}", length.0);
+                println!("packet id: {:#02x}", id.0);
+
+                self.handle_packet(id.0, &mut buf).await?;
+                buf.truncate(length.0 as usize + 3);
             }
-
-            let read = stream.read_buf(&mut buf).await?;
-            println!("read {} bytes", read);
-
-            // read packet frame
-            let length = VarInt::decode(&mut buf)?;
-            let id = VarInt::decode(&mut buf)?;
-
-            println!("packet length: {:#06x}", length.0);
-            println!("packet id: {:#06x}", id.0);
-
-            self.handle_packet(id.0, &mut buf).await?;
         }
     }
 
@@ -97,6 +98,7 @@ impl Connection {
                         packet.encode(&mut bytes)?;
 
                         self.stream.write(&bytes).await?;
+                        println!("test");
                     }
 
                     _ => println!("unimplemented packet: {}", id),
@@ -107,6 +109,7 @@ impl Connection {
             State::Closed => println!("closed state"),
         }
 
+        println!("flushing");
         self.stream.flush().await?;
         Ok(())
     }

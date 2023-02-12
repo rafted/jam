@@ -27,7 +27,7 @@ impl<'a> Server<'a> {
                     stream,
                 };
 
-                connection.handle_loop().await;
+                connection.handle_loop().await.expect("error handling");
             });
         }
     }
