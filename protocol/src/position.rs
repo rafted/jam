@@ -1,7 +1,7 @@
-use std::{num::TryFromIntError, io::Write};
-use bytes::{Buf, BufMut};
-use byteorder::{BigEndian, ReadBytesExt};
 use crate::encoding::Encodable;
+use byteorder::{BigEndian, ReadBytesExt};
+use bytes::{Buf, BufMut};
+use std::{io::Write, num::TryFromIntError};
 
 pub type Angle = f32;
 

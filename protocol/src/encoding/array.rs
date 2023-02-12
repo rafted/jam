@@ -1,4 +1,4 @@
-use bytes::{BufMut, Buf};
+use bytes::{Buf, BufMut};
 
 use crate::array::CountedArray;
 

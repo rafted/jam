@@ -1,4 +1,4 @@
-use bytes::{BufMut, Buf};
+use bytes::{Buf, BufMut};
 
 pub trait Encodable
 where

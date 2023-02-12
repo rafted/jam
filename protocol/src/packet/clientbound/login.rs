@@ -4,7 +4,7 @@ use crate::{chat::ChatComponent, varint::VarInt};
 
 #[derive(PacketDef)]
 pub struct DisconnectPacket<'a> {
-    pub reason: ChatComponent<'a>
+    pub reason: ChatComponent<'a>,
 }
 
 #[derive(PacketDef)]
@@ -16,10 +16,8 @@ pub struct EncryptionRequestPacket {
 
     // /// Shared secret.
     // pub shared_secret: Vec<i8>,
-
     /// Length of verify token.
     pub verify_token_length: VarInt,
-
     // /// Verify token.
     // pub verify_token: Vec<i8>,
 }
@@ -32,7 +30,6 @@ pub struct LoginSuccessPacket {
 
     /// Username of Player.
     pub username: String,
-
 }
 
 #[derive(PacketDef)]
@@ -40,5 +37,3 @@ pub struct SetCompressionPacket {
     /// Maximum size of a packet before its compressed.
     pub threshold: VarInt,
 }
-
-

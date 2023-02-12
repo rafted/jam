@@ -14,12 +14,8 @@ pub struct EncryptionResponsePacket {
 
     // /// Shared secret.
     // pub shared_secret: Vec<i8>,
-
     /// Length of verify token.
     pub verify_token_length: VarInt,
-
     // /// Verify token.
     // pub verify_token: Vec<i8>,
 }
-
-

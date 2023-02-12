@@ -63,5 +63,3 @@ pub struct PongPacket {
     /// Long that was sent by the client.
     pub payload: i64,
 }
-
-

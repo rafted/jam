@@ -1,6 +1,6 @@
 use std::io::{Read, Write};
 
-use bytes::{BufMut, Buf};
+use bytes::{Buf, BufMut};
 
 use crate::encoding::Encodable;
 
