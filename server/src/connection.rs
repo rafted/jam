@@ -1,7 +1,5 @@
-use std::fmt::format;
-
 use anyhow::anyhow;
-use bytes::{BytesMut, Buf};
+use bytes::BytesMut;
 use protocol::{
     encoding::Encodable,
     packet::{
@@ -30,24 +28,25 @@ impl Connection {
 
             match stream.try_read_buf(&mut buf) {
                 Ok(0) => (),
-                Ok(read) => println!("read {} bytes", read),
+                Ok(read) => {
+                    dbg!(read);
+                    ()
+                },
                 _ => (),
             };
 
             while !buf.is_empty() {
-                println!("READING FROM DA SAME BUFFER AND STUFF");
+                println!("reading from buffer");
                 // read packet frame
                 let length = VarInt::decode(&mut buf)?;
-                let pre = format!("{:?}", buf);
                 let id = VarInt::decode(&mut buf)?;
-                let post = format!("{:?}", buf);
-                
-                assert_ne!(pre, post);
 
-                println!("packet length: {}", length.0);
-                println!("packet id: {:#02x}", id.0);
+                dbg!(length.0);
+                dbg!(id.0);
 
+                dbg!(buf);
                 self.handle_packet(id.0, &mut buf).await?;
+                dbg!(buf);
             }
         }
     }
@@ -114,6 +113,7 @@ impl Connection {
             State::Closed => println!("closed state"),
         }
 
+        dbg!(buf.remaining());
         self.stream.flush().await?;
         Ok(())
     }
