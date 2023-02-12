@@ -1,7 +1,12 @@
 use anyhow::anyhow;
 use bytes::BytesMut;
 use protocol::{
-    encoding::Encodable, packet::{serverbound::{handshaking::HandshakePacket, status::RequestPacket}, clientbound::status::ResponsePacket}, state::State,
+    encoding::Encodable,
+    packet::{
+        clientbound::status::ResponsePacket,
+        serverbound::{handshaking::HandshakePacket, status::RequestPacket},
+    },
+    state::State,
     varint::VarInt,
 };
 use tokio::{
@@ -11,13 +16,15 @@ use tokio::{
 
 pub struct Connection {
     pub state: State,
+    pub stream: TcpStream,
 }
 
 impl Connection {
-    pub async fn handle_loop(mut self, mut stream: TcpStream) -> anyhow::Result<()> {
+    pub async fn handle_loop(mut self) -> anyhow::Result<()> {
         let mut buf = BytesMut::new();
 
         loop {
+            let stream = &mut self.stream;
             let ready = stream.ready(Interest::READABLE).await?;
 
             if !ready.is_readable() {
@@ -79,16 +86,16 @@ impl Connection {
                                 "description": {
                                     "text": "A Lightweight and High Performant Server"
                                 },
-                            }).to_string()
+                            })
+                            .to_string(),
                         };
 
                         todo!("send response")
+                    }
 
-                    },
-
-                    _ => todo!("implement packet")
+                    _ => todo!("implement packet"),
                 }
-            }, 
+            }
             State::Login => todo!("login state"),
             State::Play => todo!("play state"),
             State::Closed => todo!("closed state"),
