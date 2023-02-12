@@ -1,7 +1,7 @@
 use anyhow::anyhow;
 use bytes::BytesMut;
 use protocol::{
-    encoding::Encodable, packet::serverbound::handshaking::HandshakePacket, state::State,
+    encoding::Encodable, packet::{serverbound::{handshaking::HandshakePacket, status::RequestPacket}, clientbound::status::ResponsePacket}, state::State,
     varint::VarInt,
 };
 use tokio::{
@@ -59,7 +59,36 @@ impl Connection {
                     _ => todo!("implement packet"),
                 }
             }
-            State::Status => todo!("status state"),
+            State::Status => {
+                match id {
+                    0 => {
+                        // read status request packet (and completely ignore it as it has no fields)
+                        RequestPacket::decode(buf)?;
+
+                        // craft response packet
+                        let packet = ResponsePacket {
+                            response: serde_json::json!({
+                                "version": {
+                                    "name": "1.8.9",
+                                    "protocol": 47
+                                },
+                                "players": {
+                                    "max": 20,
+                                    "online": 0,
+                                },
+                                "description": {
+                                    "text": "A Lightweight and High Performant Server"
+                                },
+                            }).to_string()
+                        };
+
+                        todo!("send response")
+
+                    },
+
+                    _ => todo!("implement packet")
+                }
+            }, 
             State::Login => todo!("login state"),
             State::Play => todo!("play state"),
             State::Closed => todo!("closed state"),
