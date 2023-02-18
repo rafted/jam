@@ -27,26 +27,18 @@ impl Connection {
             let stream = &mut self.stream;
 
             match stream.try_read_buf(&mut buf) {
-                Ok(0) => (),
-                Ok(read) => {
-                    dbg!(read);
-                    ()
-                },
+                Ok(0) => {},
+                Ok(_read) => {},
                 _ => (),
             };
 
             while !buf.is_empty() {
-                println!("reading from buffer");
                 // read packet frame
                 let length = VarInt::decode(&mut buf)?;
                 let id = VarInt::decode(&mut buf)?;
 
-                dbg!(length.0);
-                dbg!(id.0);
 
-                // dbg!(buf);
                 self.handle_packet(id.0, &mut buf).await?;
-                // dbg!(buf);
             }
         }
     }
@@ -99,10 +91,23 @@ impl Connection {
                             .to_string(),
                         };
 
-                        let mut bytes = BytesMut::new();
-                        packet.encode(&mut bytes)?;
+                        // create a buffer for the length of the packet (sent first) and another
+                        // for the packet itself.
+                        let mut len_buf = BytesMut::new();
+                        let mut packet_buf = BytesMut::new();
 
-                        self.stream.write(&bytes).await?;
+                        // write id of the packet to the packet buffer
+                        VarInt(0).encode(&mut packet_buf)?;
+
+                        // write the packet itself to the packet buffer
+                        packet.encode(&mut packet_buf)?;
+
+                        // write length of the packet to the length buffer
+                        VarInt(packet_buf.len() as i32).encode(&mut len_buf)?;
+
+                        // write length first, then the packet
+                        self.stream.write(&len_buf).await?;
+                        self.stream.write(&packet_buf).await?;
                     }
 
                     _ => println!("unimplemented packet: {}", id),
@@ -113,7 +118,7 @@ impl Connection {
             State::Closed => println!("closed state"),
         }
 
-        dbg!(buf.len());
+        println!("processed packet");
         self.stream.flush().await?;
         Ok(())
     }
