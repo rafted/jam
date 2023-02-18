@@ -44,9 +44,9 @@ impl Connection {
                 dbg!(length.0);
                 dbg!(id.0);
 
-                dbg!(buf);
+                // dbg!(buf);
                 self.handle_packet(id.0, &mut buf).await?;
-                dbg!(buf);
+                // dbg!(buf);
             }
         }
     }
@@ -113,7 +113,7 @@ impl Connection {
             State::Closed => println!("closed state"),
         }
 
-        dbg!(buf.remaining());
+        dbg!(buf.len());
         self.stream.flush().await?;
         Ok(())
     }
