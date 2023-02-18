@@ -123,7 +123,7 @@ pub struct PlayerPositionPacket {
 /// z =  cos(pitch) * cos(yaw)
 /// ```
 #[derive(PacketDef)]
-pub struct PlayerPositionLook {
+pub struct PlayerLook {
     /// Absolute rotation on the X Axis, in degrees
     pub yaw: f32,
 
