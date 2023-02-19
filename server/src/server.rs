@@ -1,11 +1,18 @@
-use protocol::{state::State, chat::ChatComponent};
-use tokio::net::TcpListener;
+use std::net::TcpListener;
+
+use bevy_ecs::system::{Res, Resource, Commands, Query};
+use protocol::{chat::ChatComponent, state::State};
 use typed_builder::TypedBuilder;
 
 use crate::connection::Connection;
 
-#[derive(TypedBuilder)]
-pub struct Server<'a> {
+#[derive(Resource)]
+pub struct Server {
+    pub listener: TcpListener,
+}
+
+#[derive(Resource, TypedBuilder)]
+pub struct ServerConfiguration<'a> {
     #[builder(default = "0.0.0.0")]
     pub host: &'a str,
 
@@ -19,21 +26,21 @@ pub struct Server<'a> {
     pub motd: ChatComponent<'a>,
 }
 
-impl<'a> Server<'a> {
-    pub async fn start(&self) -> anyhow::Result<()> {
-        let listener = TcpListener::bind(format!("{}:{}", self.host, self.port)).await?;
+pub fn accept_connections(server: Res<Server>, mut commands: Commands) {
+    let (stream, _) = server.listener.accept().expect("couldn't accept connection");
+    let addr = stream.peer_addr().unwrap();
 
-        loop {
-            let (stream, _) = listener.accept().await?;
+    println!("{}: opened", addr);
 
-            tokio::spawn(async move {
-                let connection = Connection {
-                    state: State::default(),
-                    stream,
-                };
+    // spawn entity for the connection
+    commands.spawn(Connection {
+        state: State::default(),
+        stream
+    });
+}
 
-                connection.handle_loop().await.expect("error handling");
-            });
-        }
+pub fn handle_connections(query: Query<&Connection>) {
+    for connection in &query {
+        println!("handling connection {}", connection.stream.peer_addr().unwrap());
     }
 }
