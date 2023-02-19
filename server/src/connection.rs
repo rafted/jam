@@ -1,4 +1,4 @@
-use anyhow::anyhow;
+use anyhow::{anyhow, Result};
 use bytes::BytesMut;
 use protocol::{
     encoding::Encodable,
@@ -41,6 +41,28 @@ impl Connection {
                 self.handle_packet(id.0, &mut buf).await?;
             }
         }
+    }
+
+    pub fn buf_prep() -> BytesMut {
+        BytesMut::new()
+    } 
+
+    pub fn buf_write_id(buf: &mut BytesMut, id: i32) -> Result<()> {
+        VarInt(id).encode(buf)
+    }
+
+    pub async fn buf_send(&mut self, pkt_buf: &mut BytesMut) -> Result<()> {
+        // create a buffer for the length of the packet (sent first)
+        let mut len_buf = BytesMut::new();
+
+        // write length of the packet to the length buffer
+        VarInt(pkt_buf.len() as i32).encode(&mut len_buf)?;
+
+        // write length first, then the packet
+        self.stream.write(&len_buf).await?;
+        self.stream.write(&pkt_buf).await?;
+
+        Ok(())
     }
 
     pub async fn handle_packet(
@@ -91,23 +113,14 @@ impl Connection {
                             .to_string(),
                         };
 
-                        // create a buffer for the length of the packet (sent first) and another
-                        // for the packet itself.
-                        let mut len_buf = BytesMut::new();
-                        let mut packet_buf = BytesMut::new();
+                        // prepare buffer
+                        let mut buf = Self::buf_prep();
 
-                        // write id of the packet to the packet buffer
-                        VarInt(0).encode(&mut packet_buf)?;
+                        // write packet to buffer
+                        Self::buf_write_id(&mut buf, 0)?;
+                        packet.encode(&mut buf)?;
 
-                        // write the packet itself to the packet buffer
-                        packet.encode(&mut packet_buf)?;
-
-                        // write length of the packet to the length buffer
-                        VarInt(packet_buf.len() as i32).encode(&mut len_buf)?;
-
-                        // write length first, then the packet
-                        self.stream.write(&len_buf).await?;
-                        self.stream.write(&packet_buf).await?;
+                        self.buf_send(&mut buf).await?;
                     }
 
                     _ => println!("unimplemented packet: {}", id),
