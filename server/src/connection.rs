@@ -3,13 +3,19 @@ use bytes::BytesMut;
 use protocol::{
     encoding::Encodable,
     packet::{
-        clientbound::status::ResponsePacket,
-        serverbound::{handshaking::HandshakePacket, status::RequestPacket},
+        clientbound::status::{PongPacket, ResponsePacket},
+        serverbound::{
+            handshaking::HandshakePacket,
+            status::{PingPacket, RequestPacket},
+        },
     },
     state::State,
     varint::VarInt,
 };
-use tokio::{io::AsyncWriteExt, net::TcpStream};
+use tokio::{
+    io::{AsyncReadExt, AsyncWriteExt},
+    net::TcpStream,
+};
 
 pub struct Connection {
     pub state: State,
@@ -23,11 +29,7 @@ impl Connection {
         loop {
             let stream = &mut self.stream;
 
-            match stream.try_read_buf(&mut buf) {
-                Ok(0) => {}
-                Ok(_read) => {}
-                _ => (),
-            };
+            stream.read_buf(&mut buf).await?;
 
             while !buf.is_empty() {
                 // read packet frame
@@ -92,7 +94,7 @@ impl Connection {
                         RequestPacket::decode(buf)?;
 
                         // craft response packet
-                        let packet = ResponsePacket {
+                        let response_pkt = ResponsePacket {
                             response: serde_json::json!({
                                 "version": {
                                     "name": "1.8.9",
@@ -114,9 +116,32 @@ impl Connection {
 
                         // write packet to buffer
                         Self::buf_write_id(&mut buf, 0)?;
-                        packet.encode(&mut buf)?;
+                        response_pkt.encode(&mut buf)?;
 
+                        // send packet
                         self.buf_send(&mut buf).await?;
+                    }
+
+                    1 => {
+                        let pkt = PingPacket::decode(buf)?;
+
+                        // craft response packet
+                        let response_pkt = PongPacket {
+                            payload: pkt.payload,
+                        };
+
+                        // prepare buffer
+                        let mut buf = Self::buf_prep();
+
+                        // write packet to buffer
+                        Self::buf_write_id(&mut buf, 1)?;
+                        response_pkt.encode(&mut buf)?;
+
+                        // send packet
+                        self.buf_send(&mut buf).await?;
+
+                        // close connection
+                        self.stream.shutdown().await?;
                     }
 
                     _ => println!("unimplemented packet: {}", id),
