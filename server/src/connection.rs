@@ -152,7 +152,6 @@ impl Connection {
             State::Closed => println!("closed state"),
         }
 
-        println!("processed packet");
         self.stream.flush().await?;
         Ok(())
     }
