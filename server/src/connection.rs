@@ -9,10 +9,7 @@ use protocol::{
     state::State,
     varint::VarInt,
 };
-use tokio::{
-    io::AsyncWriteExt,
-    net::TcpStream,
-};
+use tokio::{io::AsyncWriteExt, net::TcpStream};
 
 pub struct Connection {
     pub state: State,
@@ -27,16 +24,15 @@ impl Connection {
             let stream = &mut self.stream;
 
             match stream.try_read_buf(&mut buf) {
-                Ok(0) => {},
-                Ok(_read) => {},
+                Ok(0) => {}
+                Ok(_read) => {}
                 _ => (),
             };
 
             while !buf.is_empty() {
                 // read packet frame
-                let length = VarInt::decode(&mut buf)?;
+                let _length = VarInt::decode(&mut buf)?;
                 let id = VarInt::decode(&mut buf)?;
-
 
                 self.handle_packet(id.0, &mut buf).await?;
             }
@@ -45,7 +41,7 @@ impl Connection {
 
     pub fn buf_prep() -> BytesMut {
         BytesMut::new()
-    } 
+    }
 
     pub fn buf_write_id(buf: &mut BytesMut, id: i32) -> Result<()> {
         VarInt(id).encode(buf)
