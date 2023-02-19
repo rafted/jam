@@ -17,6 +17,8 @@ use tokio::{
     net::TcpStream,
 };
 
+use crate::server::Server;
+
 pub struct Connection {
     pub state: State,
     pub stream: TcpStream,
@@ -104,9 +106,7 @@ impl Connection {
                                     "max": 20,
                                     "online": 0,
                                 },
-                                "description": {
-                                    "text": "A Lightweight and High Performant Server"
-                                },
+                                "description": 
                             })
                             .to_string(),
                         };
