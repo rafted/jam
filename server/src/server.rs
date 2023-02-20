@@ -52,7 +52,6 @@ pub fn accept_connections(server: Res<Server>, mut commands: Commands) {
 
 pub fn handle_connections(mut commands: Commands, mut query: Query<&mut Connection>) {
     for mut connection in &mut query {
-
         if let Err(_) = connection.read() {
             continue;
         }

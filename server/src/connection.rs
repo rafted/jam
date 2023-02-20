@@ -4,7 +4,7 @@ use std::{
     net::TcpStream,
 };
 
-use anyhow::{Result, anyhow};
+use anyhow::{anyhow, Result};
 use bevy_ecs::prelude::Component;
 use bytes::BytesMut;
 use protocol::{encoding::Encodable, state::State, varint::VarInt};
@@ -30,12 +30,8 @@ impl Connection {
 
     pub fn read(&mut self) -> Result<()> {
         match self.stream.read(&mut self.buf) {
-            Ok(v) => {
-                if v == 0 {
-                    Err(anyhow!("couldn't read")))
-                }
-            }
-            Err(_) => Err(anyhow!("couldn't read")))
+            Ok(0) | Err(_) => Err(anyhow!("couldn't read")),
+            Ok(_) => Ok(()),
         }
     }
 
