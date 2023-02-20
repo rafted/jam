@@ -1,4 +1,4 @@
-use std::net::TcpListener;
+use std::{io::BufRead, net::TcpListener};
 
 use bevy_ecs::system::{Commands, Query, Res, Resource};
 use bytes::Buf;
@@ -52,37 +52,32 @@ pub fn accept_connections(server: Res<Server>, mut commands: Commands) {
 
 pub fn handle_connections(mut commands: Commands, mut query: Query<&mut Connection>) {
     for mut connection in &mut query {
-        // connection
-        //     .read()
-        //     .expect("unable to read buffer from connection");
+        if let Err(_) = connection.read() {
+            continue;
+        }
 
-        // let buf = &mut connection.buf;
+        let buf = &mut connection.buf;
 
-        // while !buf.is_empty() {
-        //     // read packet frame
-        //     let length = VarInt::decode(buf).expect("unable to decode length as VarInt");
-        //     let id = VarInt::decode(buf).expect("unable to decode id as VarInt");
+        while !buf.is_empty() {
+            // read packet frame
+            let length = VarInt::decode(buf).expect("unable to decode length as VarInt");
+            let id = VarInt::decode(buf).expect("unable to decode id as VarInt");
 
-        //     // self.handle_packet(id.0, &mut buf)?;
-        //     println!("== packet id: {}", id.0);
-        //     println!("== packet length: {}", length.0);
+            println!("== packet id: {}", id.0);
+            println!("== packet length: {}", length.0);
 
-        //     // let container = PacketContainer {
-        //     //     id,
-        //     //     length,
-        //     //     data: buf,
-        //     //     // data: buf.take(length.0.try_into().unwrap()).chunk(),
-        //     // };
+            let mut buffer = Vec::<u8>::new();
+            buf.reader()
+                .read_until(length.0 as u8, &mut buffer)
+                .expect("unable to read packet");
 
-        //     // commands.spawn(container);
-        // }
+            let container = PacketContainer {
+                id,
+                length,
+                data: buffer,
+            };
 
-        // let empty = &buf.is_empty();
-
-        println!(
-            "handling connection {}",
-            connection.stream.peer_addr().unwrap(),
-            // empty
-        );
+            commands.spawn(container);
+        }
     }
 }

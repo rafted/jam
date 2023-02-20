@@ -17,10 +17,10 @@ pub struct Connection {
 }
 
 #[derive(Component)]
-pub struct PacketContainer<'a> {
+pub struct PacketContainer {
     pub id: VarInt,
     pub length: VarInt,
-    pub data: &'a [u8],
+    pub data: Vec<u8>,
 }
 
 impl Connection {
