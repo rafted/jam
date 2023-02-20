@@ -62,6 +62,5 @@ pub struct ClickEvent {
 pub struct HoverEvent<'a> {
     #[builder(default)]
     // pub show_text: Option<&'a ChatComponent<'a>>,
-
     phantom: PhantomData<&'a str>,
 }

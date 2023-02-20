@@ -20,6 +20,7 @@ fn main() -> anyhow::Result<()> {
 
     // bind server (we handle connections inside the ECS)
     let listener = TcpListener::bind(format!("{}:{}", config.host, config.port))?;
+    listener.set_nonblocking(true)?;
 
     // setup ECS
     let mut world = World::new();
@@ -37,7 +38,7 @@ fn main() -> anyhow::Result<()> {
         Networking,
         SystemStage::parallel()
             .with_system(server::accept_connections)
-            .with_system(server::handle_connections)
+            .with_system(server::handle_connections),
     );
 
     loop {
