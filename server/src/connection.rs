@@ -1,5 +1,4 @@
 use std::{
-    cell::{Cell, RefCell},
     io::{Read, Write},
     net::TcpStream,
 };
@@ -13,10 +12,10 @@ use protocol::{encoding::Encodable, state::State, varint::VarInt};
 pub struct Connection {
     pub state: State,
     pub stream: TcpStream,
-    pub buf: BytesMut,
+    pub buf: Vec<u8>,
 }
 
-#[derive(Component)]
+#[derive(Component, Debug)]
 pub struct PacketContainer {
     pub id: VarInt,
     pub length: VarInt,
@@ -29,7 +28,7 @@ impl Connection {
     }
 
     pub fn read(&mut self) -> Result<()> {
-        match self.stream.read(&mut self.buf) {
+        match self.stream.read_to_end(&mut self.buf) {
             Ok(0) | Err(_) => Err(anyhow!("couldn't read")),
             Ok(_) => Ok(()),
         }

@@ -1,11 +1,14 @@
 use std::net::TcpListener;
 
 use bevy_ecs::{
+    prelude::Events,
     schedule::{Schedule, Stage, StageLabel, SystemStage},
     world::World,
 };
 use protocol::chat::ChatComponent;
 use server::{Server, ServerConfiguration};
+
+use crate::connection::PacketContainer;
 
 pub mod connection;
 pub mod server;
@@ -25,6 +28,7 @@ fn main() -> anyhow::Result<()> {
     // setup ECS
     let mut world = World::new();
 
+    world.insert_resource(Events::<PacketContainer>::default());
     world.insert_resource(config);
     world.insert_resource(Server { listener });
 

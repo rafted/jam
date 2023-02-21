@@ -1,7 +1,10 @@
 use std::{io::BufRead, net::TcpListener};
 
-use bevy_ecs::system::{Commands, Query, Res, Resource};
-use bytes::Buf;
+use bevy_ecs::{
+    prelude::{EventReader, EventWriter},
+    system::{Commands, Query, Res, Resource},
+};
+use bytes::{Buf, BytesMut};
 use protocol::{chat::ChatComponent, encoding::Encodable, state::State, varint::VarInt};
 use typed_builder::TypedBuilder;
 
@@ -38,7 +41,7 @@ pub fn accept_connections(server: Res<Server>, mut commands: Commands) {
                 // spawn entity for the connection
                 commands.spawn(Connection {
                     state: State::default(),
-                    buf: Connection::buf_prep(),
+                    buf: Vec::new(),
                     stream,
                 });
             }
@@ -50,24 +53,25 @@ pub fn accept_connections(server: Res<Server>, mut commands: Commands) {
     }
 }
 
-pub fn handle_connections(mut commands: Commands, mut query: Query<&mut Connection>) {
+pub fn handle_connections(
+    mut query: Query<&mut Connection>,
+    mut writer: EventWriter<PacketContainer>,
+) {
     for mut connection in &mut query {
         if let Err(_) = connection.read() {
             continue;
         }
 
-        let buf = &mut connection.buf;
+        let buf = &connection.buf;
+        let buf = &mut BytesMut::from(buf.as_slice());
 
         while !buf.is_empty() {
-            println!("CUM");
             // read packet frame
             let length = VarInt::decode(buf).expect("unable to decode length as VarInt");
             let id = VarInt::decode(buf).expect("unable to decode id as VarInt");
 
-            println!("== packet id: {}", id.0);
-            println!("== packet length: {}", length.0);
-
             let mut buffer = Vec::<u8>::new();
+
             buf.reader()
                 .read_until(length.0 as u8, &mut buffer)
                 .expect("unable to read packet");
@@ -78,7 +82,13 @@ pub fn handle_connections(mut commands: Commands, mut query: Query<&mut Connecti
                 data: buffer,
             };
 
-            commands.spawn(container);
+            writer.send(container);
         }
+    }
+}
+
+pub fn handle_packet(mut event: EventReader<PacketContainer>) {
+    for event in event.iter() {
+        dbg!(event);
     }
 }
