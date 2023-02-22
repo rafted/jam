@@ -3,7 +3,7 @@ use std::marker::PhantomData;
 use serde::{Deserialize, Serialize};
 use typed_builder::TypedBuilder;
 
-#[derive(TypedBuilder, Serialize, Deserialize)]
+#[derive(TypedBuilder, Serialize, Deserialize, Clone)]
 pub struct ChatComponent<'a> {
     text: String,
 
@@ -40,7 +40,7 @@ pub struct ChatComponent<'a> {
     extra: Option<Vec<ChatComponent<'a>>>,
 }
 
-#[derive(TypedBuilder, Serialize, Deserialize)]
+#[derive(TypedBuilder, Serialize, Deserialize, Clone)]
 pub struct ClickEvent {
     #[builder(default)]
     pub open_url: Option<String>,
@@ -58,7 +58,7 @@ pub struct ClickEvent {
     pub copy_to_clipboard: Option<String>,
 }
 
-#[derive(TypedBuilder, Serialize, Deserialize)]
+#[derive(TypedBuilder, Serialize, Deserialize, Clone)]
 pub struct HoverEvent<'a> {
     #[builder(default)]
     // pub show_text: Option<&'a ChatComponent<'a>>,
