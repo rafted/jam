@@ -9,7 +9,7 @@ use server::ServerConfiguration;
 
 use crate::{
     connection::{Connection, PacketContainer},
-    server::accept_loop,
+    server::{accept_loop, handle_connections},
     sync::{sync_connections, ChannelsRes},
 };
 
@@ -47,12 +47,22 @@ async fn main() -> anyhow::Result<()> {
     // run schedule loop
     let mut schedule = Schedule::default();
 
+    // sync stage
     #[derive(StageLabel)]
     pub struct Sync;
 
     schedule.add_stage(
         Sync,
         SystemStage::single_threaded().with_system(sync_connections),
+    );
+
+    // network stage
+    #[derive(StageLabel)]
+    pub struct Network;
+
+    schedule.add_stage(
+        Network,
+        SystemStage::single_threaded().with_system(handle_connections),
     );
 
     // bind server
