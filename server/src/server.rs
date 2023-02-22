@@ -1,21 +1,17 @@
 use std::{io::BufRead, net::TcpListener};
 
+use crate::connection::{Connection, PacketContainer};
+use anyhow::Result;
 use bevy_ecs::{
     prelude::{EventReader, EventWriter},
-    system::{Commands, Query, Res, Resource},
+    system::{Query, Resource},
 };
 use bytes::{Buf, BytesMut};
+use crossbeam_channel::Sender;
 use protocol::{chat::ChatComponent, encoding::Encodable, state::State, varint::VarInt};
 use typed_builder::TypedBuilder;
 
-use crate::connection::{Connection, PacketContainer};
-
-#[derive(Resource)]
-pub struct Server {
-    pub listener: TcpListener,
-}
-
-#[derive(Resource, TypedBuilder)]
+#[derive(Resource, TypedBuilder, Clone)]
 pub struct ServerConfiguration<'a> {
     #[builder(default = "0.0.0.0")]
     pub host: &'a str,
@@ -30,26 +26,28 @@ pub struct ServerConfiguration<'a> {
     pub motd: ChatComponent<'a>,
 }
 
-pub fn accept_connections(server: Res<Server>, mut commands: Commands) {
-    for stream in server.listener.incoming() {
-        match stream {
-            Ok(stream) => {
-                let addr = stream.peer_addr().unwrap();
+/// Binds the server on a set host and port (given by a [ServerConfiguration].)
+pub async fn bind<'a>(config: &ServerConfiguration<'a>) -> Result<TcpListener> {
+    let host = config.host;
+    let port = config.port;
 
-                println!("{}: opened", addr);
+    Ok(TcpListener::bind(format!("{}:{}", host, port))?)
+}
 
-                // spawn entity for the connection
-                commands.spawn(Connection {
-                    state: State::default(),
-                    buf: Vec::new(),
-                    stream,
-                });
-            }
-            Err(ref e) if e.kind() == std::io::ErrorKind::WouldBlock => {
-                break;
-            }
-            Err(e) => panic!("encountered IO error: {e}"),
-        }
+/// Accepts connections from a [TcpListener].
+pub async fn accept_loop(listener: TcpListener, sender: Sender<Connection>) -> Result<()> {
+    loop {
+        // accept connection (this is very blocking)
+        let (stream, _) = listener.accept()?;
+
+        // create component for the connection
+        let connection = Connection {
+            state: State::default(),
+            stream,
+            buf: vec![],
+        };
+
+        sender.send(connection)?;
     }
 }
 
