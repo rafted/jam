@@ -11,7 +11,7 @@ use crossbeam_channel::Sender;
 use protocol::{chat::ChatComponent, encoding::Encodable, state::State, varint::VarInt};
 use typed_builder::TypedBuilder;
 
-#[derive(Resource, TypedBuilder, Clone)]
+#[derive(Resource, TypedBuilder)]
 pub struct ServerConfiguration<'a> {
     #[builder(default = "0.0.0.0")]
     pub host: &'a str,

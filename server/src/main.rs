@@ -29,11 +29,14 @@ async fn main() -> anyhow::Result<()> {
         .motd(motd)
         .build();
 
+    // bind server
+    let listener = server::bind(&config).await?;
+
     // setup ECS
     let mut world = World::new();
 
     world.insert_resource(Events::<PacketContainer>::default());
-    world.insert_resource(config.clone());
+    world.insert_resource(config);
 
     let (connection_sender, connection_receiver) = unbounded::<Connection>();
 
@@ -64,9 +67,6 @@ async fn main() -> anyhow::Result<()> {
         Network,
         SystemStage::single_threaded().with_system(handle_connections),
     );
-
-    // bind server
-    let listener = server::bind(&config).await?;
 
     tokio::task::spawn(accept_loop(listener, connection_sender.clone()));
 
