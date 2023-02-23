@@ -9,7 +9,7 @@ use server::ServerConfiguration;
 
 use crate::{
     connection::{Connection, PacketContainer},
-    server::{accept_loop, handle_connections},
+    server::{accept_loop, handle_connections, handle_packet},
     sync::{sync_connections, ChannelsRes},
 };
 
@@ -35,6 +35,9 @@ async fn main() -> anyhow::Result<()> {
     // setup ECS
     let mut world = World::new();
 
+    #[derive(Debug, Clone, PartialEq, Eq, Hash)]
+    pub struct FlushEvents;
+
     world.insert_resource(Events::<PacketContainer>::default());
     world.insert_resource(config);
 
@@ -54,10 +57,7 @@ async fn main() -> anyhow::Result<()> {
     #[derive(StageLabel)]
     pub struct Sync;
 
-    schedule.add_stage(
-        Sync,
-        SystemStage::single_threaded().with_system(sync_connections),
-    );
+    schedule.add_stage(Sync, SystemStage::parallel().with_system(sync_connections));
 
     // network stage
     #[derive(StageLabel)]
@@ -65,7 +65,10 @@ async fn main() -> anyhow::Result<()> {
 
     schedule.add_stage(
         Network,
-        SystemStage::single_threaded().with_system(handle_connections),
+        SystemStage::parallel()
+            .with_system(Events::<PacketContainer>::update_system)
+            .with_system(handle_connections)
+            .with_system(handle_packet),
     );
 
     tokio::task::spawn(accept_loop(listener, connection_sender.clone()));

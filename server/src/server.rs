@@ -56,6 +56,7 @@ pub fn handle_connections(
     mut writer: EventWriter<PacketContainer>,
 ) {
     for mut connection in &mut query {
+        // this is currently blocking the thread. any idea?
         if let Err(_) = connection.read() {
             continue;
         }
